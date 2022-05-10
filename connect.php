@@ -26,8 +26,8 @@ class web{
         $arr[2]=mysqli_fetch_row($this->query("select d3 from user where user_id=$user_id"))[0];
         return $arr;
     }*/
-    function userSignUp($user_name,$user_id,$user_t,$user_p){
-        $sql="insert into user(user_name,user_t,user_id,user_p) values('$user_name','$user_t','$user_id','$user_p')";
+    function userSignUp($user_name,$user_t,$user_id,$user_p){
+        $sql="insert into user(user_name, user_t,  user_id,user_p) values('$user_name','$user_t','$user_id','$user_p')";
         if($this->query($sql)){
             return true;
         }
