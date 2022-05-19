@@ -2,12 +2,7 @@
 require "connect.php";
 $web=new web;
 session_start();
-/*if(!isset($_SESSION["user_id"])){
-    echo "<script> {window.alert('請先登入');location.href='login.php'} </script>";
-}
-else{
-    echo "<script> {window.alert('請先登入系統');location.href='login.php'} </script>";
-}*/
+include "logincheck.php";
 if(isset($_SESSION["user_id"])){
     $type=$_SESSION["user_id"];
 } 
@@ -29,7 +24,7 @@ $id = $_SESSION['user_id'];
 	<head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>我的商品 &mdash; 100% Free Fully Responsive HTML5 Template by FREEHTML5.co</title>
+	<title>書籍共享系統</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="Free HTML5 Template by FREEHTML5.CO" />
 	<meta name="keywords" content="free html5, free template, free bootstrap, html5, css3, mobile first, responsive" />
@@ -107,15 +102,7 @@ $id = $_SESSION['user_id'];
 					<h1 id="fh5co-logo"><a href="index.php">書籍共享系統</a></h1>
 					<nav id="fh5co-menu-wrap" role="navigation">
 						<ul class="sf-menu" id="fh5co-primary-menu">
-							<?php
-                            if(isset($type)){
-                                echo "<li><a href='index.php'>首頁</a></li><li><a href='books.php'>查看現有書籍</a></li><li><li><a href='my.php'>我的商品</a></li><li><a href='order.php'>檢視訂單</a></li><li><a href='cart.php'>購物車</a>
-								</li><li><a  class='active' href='user.php'>使用者資訊</a></li><li><a href='index.php?status=logout'>登出</a></li>";
-                            }
-                            else{
-                                echo "<li><a class='active' href='index.php'>主頁</a></li><li><a href='login.php'>登入</a></li>";
-                            }
-                            ?>
+							<? include "navbar.php"?>
 						</ul>
 					</nav>
 				</div>
@@ -144,32 +131,29 @@ $id = $_SESSION['user_id'];
 			<div class="row">
 				<div class="col-md-12">
 					<div class="section-title text-center">
-						<h2>使用者資訊</h2>
 					</div>
 				</div>
 			</div>
 			<div class="row">
-                            <div class='feature-full-2col'>
-                                <div class='f-hotel' style='border:1px black solid'>
-                                    <div class='image' style='background-image: url(images/hotel_feture_2.jpg); width:100px'>
-
-                                    </div>
-                                    <div class='desc'>
-                                        <table>
-                                            <?php
-                                            $link=mysqli_connect("localhost","root","12345678","user");
-                                            $sql="select * from user where user_id=$id";
-                                            $rs=mysqli_query($link,$sql);
-                                            while($record=mysqli_fetch_row($rs)){
-                                                echo "<tr><td>姓名: </td><td>$record[1]</td></tr><tr><td>學號: </td><td>$record[0]</td></tr>
-                                                <tr><td>密碼: </td><td>$record[2]</td></tr><tr><td>電話: </td><td>$record[3]</td></tr>";
-                                            }
-                                            mysqli_close($link);
-                                            ?>
-                                        </table>
-                                    </div>
-                                </div>
+                <div class='feature-full-2col' style="display: flex; justify-content: center; align-items: center;">
+                    <div class='f-hotel' style='border:1px black solid'>
+                        <div class='image' style='background-image: url(images/hotel_feture_2.jpg); width:100px'></div>
+                            <div class='desc'>
+                                <table>
+                                    <?php
+                                        $link=mysqli_connect("localhost","root","12345678","user");
+                                        $sql="select * from user where user_id=$id";
+                                        $rs=mysqli_query($link,$sql);
+                                        while($record=mysqli_fetch_row($rs)){
+                                            echo "<tr><td>姓名: </td><td>$record[1]</td></tr><tr><td>學號: </td><td>$record[0]</td></tr>
+                                            <tr></tr><tr><td>電話: </td><td>$record[3]</td></tr>";
+                                        }
+                                        mysqli_close($link);
+                                    ?>
+                                </table>
                             </div>
+                    </div>
+                </div>
 			<div class="row">
 			<?php
                 $re=$web->announce();

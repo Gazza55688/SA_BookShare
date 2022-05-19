@@ -18,7 +18,7 @@ else{
         echo "<script> {window.alert('請先登入系統');location.href='index.php'} </script>";
     }
 }
-$_SESSION['status'] = $_GET['method'];
+@$_SESSION['status'] = $_GET['method'];
 @$status = $_GET['method'];
 
 if($status=='b'){
@@ -157,7 +157,7 @@ else{
                     <div class="row">
                         <div class="col-md-12">
                             <div class="section-title text-center">
-                                <h2>填寫書籍資料</h2>
+                                <h2>填寫書籍資料(所有皆為必填)</h2>
                             </div>
                         </div>
                     </div>
@@ -182,7 +182,28 @@ else{
                                         </label>
 										<br>
                                         <label>
-                                            版本(無特別請填一般版)：<input type='text' name='book_ver' value='<?php echo @$book_ver?>' style='height:30px;color:black' required>
+                                            類型(其他類型請選其他)：
+                                            <div class="input-group mb-3">
+                                                <select name="book_cat" class="form-select" id="inputGroupSelect02" required>
+                                                    <option selected>請選擇...</option>
+                                                    <option value="文學小說">文學小說</option>
+                                                    <option value="商業理財">商業理財</option>
+                                                    <option value="藝術設計">藝術設計</option>
+                                                    <option value="人文史地">人文史地</option>
+                                                    <option value="心理勵志">心理勵志</option>
+                                                    <option value="宗教命理">宗教命理</option>
+                                                    <option value="自然科普">自然科普</option>
+                                                    <option value="醫療保健">醫療保健</option>
+                                                    <option value="生活風格">生活風格</option>
+                                                    <option value="童書/青少年文學">童書/青少年文學</option>
+                                                    <option value="考試用書/國中小參考書/教科書">考試用書/國中小參考書/教科書</option>
+                                                    <option value="影視偶像">影視偶像</option>
+                                                    <option value="漫畫/圖文書">漫畫/圖文書</option>
+                                                    <option value="語言學習">語言學習</option>
+                                                    <option value="電腦資訊">電腦資訊</option>
+                                                    <option value="其他">其他</option>
+                                                </select>
+                                            </div>
                                         </label>
 										<br>
                                         <label>

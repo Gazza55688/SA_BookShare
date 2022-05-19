@@ -33,6 +33,7 @@ $link=mysqli_connect("localhost","root","12345678","user");
             white-space: nowrap;
             position: relative;
             margin: auto;
+            border-radius: 5px;
         }
         .container-1 input#search{
             width: 300px;
@@ -224,50 +225,63 @@ $link=mysqli_connect("localhost","root","12345678","user");
                     ?>
                     <div class="row">
                         <div class="col-md-12">
-                            <div id="tabs" style="text-align: center;">
+                            <div class="section-title">
+                                <div id="tabs" style="text-align: center;">
                                         <a href='books.php?cat=<? echo $cat?>&searchtxt=<? echo $searchtxt?>' class='btn btn-primary btn-luxe-primary' style="margin-top: 20px;">我想買書(<? echo $data_nums?>)<i class='ti-angle-right'></i></a>
                                         <a href='book_br.php?cat=<? echo $cat?>&searchtxt=<? echo $searchtxt?>' class='btn btn-primary btn-luxe-primary' style="margin-top: 20px;">我想借書(<? echo $data_nums2?>)<i class='ti-angle-right'></i></a>
                                 </div>
-                                        <div class="tab-content" data-tab-content="tab1">
-                                            <div class="container ">
-                                            <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+                                        <div class="tab-content" data-tab-content="tab2">
+                                            <div class="container">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                            <div class="container">
+                                                            <div class="row text-center">
                                                     <form method="post" action="book_info.php">
                                                     <?php
-                                                    //賣書輸出
-                                                        while($record = mysqli_fetch_row($rs1)){
+                                                    //借書輸出
+                                                        if($data_nums2==0){
+                                                                echo "<div class='section-title text-center' style='padding-top:20px'>
+                                                                <h1 style='color:red'>目前無相關書籍</h1>
+                                                                </div>";
+                                                        }
+                                                        else{
+                                                            while($record = mysqli_fetch_row($rs2)){
                                                     ?>
-                                                         <div style="float:left; width:32%; height: 30%;margin: 3px; border: 1px solid;">
+                                                        <div style="float:left; width:32%; height: 30%;margin: 3px; border: 1px solid;">
                                                         <img src="<?php echo $record[6];?>">
                                                         <hr>
                                                         <div>
                                                             <p style="font-size: 15px; color: #000;"><?php echo $record[2];?></p>
                                                             <input type="hidden" name="book" value="<? echo $record[2];?>">
                                                             <p style="font-size: 15px; color: #000;">作者: <?php echo $record[3];?></p>
-                                                            <p style="font-size: 15px; color: #000;">售價: <?php echo $record[9];?></p>
-                                                            <input  class="btn btn-warning" type="submit" name="submit" value="我要買書">
+                                                            <input class="btn btn-warning" type="submit" name="submit" value="我要借書">
                                                         </div>
                                                         </div>
                                                     <?php
+                                                        }
                                                         }
                                                     ?>
                                                     </form>
                                                     <footer id="footer" style=" padding: 5px;">
                                                     <?php
                                                     //分頁頁碼
-                                                    echo '共 '.$data_nums.' 筆-在第 '.$page.' 頁-共 '.$pages.' 頁';
+                                                    echo '共 '.$data_nums2.' 筆-在第 '.$page2.' 頁-共 '.$pages2.' 頁';
                                                     echo "<br /><a href=?page=1>第一頁</a> ";
                                                     echo "第 ";
-                                                    for( $i=1 ; $i<=$pages ; $i++ ) {
-                                                    if ( $page-3 < $i && $i < $page+3 ) {
+                                                    for( $i=1 ; $i<=$pages2 ; $i++ ) {
+                                                    if ( $page2-3 < $i && $i < $page2+3 ) {
                                                         echo "<a href=?page=".$i.">".$i."</a> ";
                                                         }
                                                     } 
-                                                    echo " 頁 <a href=?page=".$pages.">末頁</a><br /><br />";
+                                                    echo " 頁 <a href=?page=".$pages2 .">末頁</a><br /><br />";
                                                     ?>
                                                     </footer>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            </div>
-                                </div>
+                                        </div>
                             </div>
                         </div>
                     </div>

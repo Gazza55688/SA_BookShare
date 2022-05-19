@@ -2,25 +2,7 @@
 require "connect.php";
 $web=new web;
 session_start();
-if(!isset($_SESSION["type"])){
-    echo "<script> {window.alert('請先登入');location.href='login.php'} </script>";
-}
-else{
-    if($_SESSION["type"]!="manager"){
-        echo "<script> {window.alert('非管理者無法進行這項操作');location.href='index.php'} </script>";
-    }
-}
-if(isset($_SESSION["type"])){
-    $type=$_SESSION["type"];
-} 
-if(isset($_GET["delid"])){
-    if($web->announceDelete($_GET["delid"])){
-        echo "<script> {window.alert('刪除成功');location.href='announce.php'} </script>";
-    }
-    else{
-        echo "<script> {window.alert('刪除失敗');location.href='announce.php'} </script>";
-    }
-}
+
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->

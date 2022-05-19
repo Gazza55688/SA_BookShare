@@ -16,10 +16,10 @@ if(isset($_POST["user_name"]) && isset($_POST["user_t"]) && isset($_POST["user_i
     <style>
         @import url('https://fonts.googleapis.com/css?family=Poppins');
 
-        /* BASIC */
+        /* BASIC #FF5722*/
 
         html {
-            background-color: #FF5722;
+            background-color: #A9A9A9;
         }
 
         body {

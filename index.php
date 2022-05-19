@@ -2,18 +2,11 @@
 require "connect.php";
 $web=new web;
 session_start();
-if(isset($_GET["status"]) && $_GET["status"]=="logout"){
-    session_destroy();
-}
-else{
-    if(isset($_SESSION["user_id"])){
-        $type=$_SESSION["user_id"];
-    }     
-}
 /*if(isset($_SESSION["user_id"])){
     $user_id=$_SESSION["user_id"];
     $arr=$web->userLove($user_id);
 }*/
+
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -148,15 +141,7 @@ else{
                             <h1 id="fh5co-logo"><a href="index.php">書籍共享系統</a></h1>
                             <nav id="fh5co-menu-wrap" role="navigation">
                                 <ul class="sf-menu" id="fh5co-primary-menu">
-                                    <?php
-                            if(isset($type)){
-                                echo "<li><a class='active' href='index.php'>首頁</a></li><li><a href='books.php'>查看現有書籍</a></li><li><li><a href='my.php'>我的商品</a></li><li><a href='order.php'>檢視訂單</a></li><li><a href='cart.php'>購物車</a>
-								</li><li><a href='user.php'>使用者資訊</a></li><li><a href='index.php?status=logout'>登出</a></li>";
-                            }
-                            else{
-                                echo "<li><a class='active' href='index.php'>主頁</a></li><li><a href='login.php'>登入</a></li>";
-                            }
-                        ?>
+                                    <? include "navbar.php"?>
                                 </ul>
                             </nav>
                         </div>
@@ -198,10 +183,12 @@ else{
                                             <p><span>設計理念</span></p>
                                             <p>
                                             </p>
+                                            <div class="row">
                                             <div class="col-md-12">
                                                     <div class="section-title text-center" style="color: #fff;">
                                                         「書籍共享系統」是一款能讓眾多讀者互相借閱書籍的系統，也能在線上借閱圖書館的書籍，使用宅配、超商取貨等方式傳遞書籍，並在閱讀完畢後歸還給該書的擁有者或圖書館。<br><br>此系統搭建的原因是為了在這個電子書興起的時代，給傳統書籍開闢一條新的道路，現在購買紙質書的人正在漸漸減少，因為它也不如電子書那般易於保存和收藏，甚至有許多書被擱置在家中角落，但是還是有許多讀者偏愛紙質書，所以人們需要更方便閱讀紙質書的管道，書籍共享系統的誕生可以給紙質書帶來新的生命力，在讀者之間傳閱共享，延續它們的價值，而且讀者在書籍交換的過程中可以認識許多有相同讀書愛好的人，還可以和眾多讀者交流讀書心得，比一個人閱讀更能抒發內心所想。
                                                     </div>
+                                            </div>
                                             </div>
                                         </div>
                                     </div>
@@ -213,7 +200,7 @@ else{
                     </ul>
                 </div>
             </aside>
-        <div id="featured-hotel" class="fh5co-bg-color">
+        <div id="featured-hotel" class="fh5co-bg-color" hidden>
                 <div class="container">
 
                     <div class="row">
