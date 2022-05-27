@@ -333,7 +333,7 @@ if(isset($_POST["user_name"]) && isset($_POST["user_t"]) && isset($_POST["user_i
                 <input type="text" id="login" class="fadeIn second" name="user_name" placeholder="姓名" required>
                 <input type="text" id="login" class="fadeIn second" name="user_t" maxlength="10" placeholder="電話" required>
                 <input type="text" id="login" class="fadeIn second" name="user_id" maxlength="9" placeholder="學號" required>
-                <input type="text" id="password" class="fadeIn third" name="user_p" placeholder="密碼" required>
+                <input type="password" id="password" class="fadeIn third" name="user_p" placeholder="密碼" required>
                 <input type="submit" class="fadeIn fourth" value="註冊">
             </form>
 

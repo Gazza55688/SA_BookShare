@@ -127,7 +127,7 @@ $id = $_SESSION['user_id'];
 
 	<div id="featured-hotel" class="fh5co-bg-color" style="background-color:white">
 		<div class="container">
-			<a href='new1.php' class='btn btn-primary btn-luxe-primary'>修改資訊<i class='ti-angle-right'></i></a>
+			<a href='edit.php' class='btn btn-primary btn-luxe-primary'>修改資訊<i class='ti-angle-right'></i></a>
 			<div class="row">
 				<div class="col-md-12">
 					<div class="section-title text-center">

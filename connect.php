@@ -103,13 +103,13 @@ class web{
         }
     }
     function recordsearch($userid){
-        return $this->query("select * from record where userid=$userid");
+        return $this->query("select * from trade where own_id=$userid");
     }
     function recordOrder($recordid){
         return $this->query("select * from record where recordid=$recordid");
     }
     function record(){
-        return $this->query("select * from record");
+        return $this->query("select * from trade");
     }
     function cancelInform($roomid,$announce){
         $arr=array();

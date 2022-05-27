@@ -166,6 +166,7 @@ $link=mysqli_connect("localhost","root","12345678","user");
             </div>
             <div id="fh5co-books-section" style="width: 100%">
                 <div class="container">
+                    <a href='index.php' class='btn btn-primary btn-luxe-primary' style="margin-top: 20px;">返回上一頁<i class='ti-angle-right'></i></a>
                     <a href='insert.php?method=b' class='btn btn-primary btn-luxe-primary' style="margin-top: 20px;">發布書本(賣)<i class='ti-angle-right'></i></a>
                     <a href='insert.php?method=br' class='btn btn-primary btn-luxe-primary' style="margin-top: 20px;">發布書本(借出)<i class='ti-angle-right'></i></a>
                     <form action="" method="get">
@@ -173,22 +174,15 @@ $link=mysqli_connect("localhost","root","12345678","user");
                             <div class="input-group mb-3">
                             <select name="cat" class="form-select" id="inputGroupSelect02" style="color: #000;">
                                 <option selected>請選擇類別(選填)</option>
-                                <option value="文學小說">文學小說</option>
-                                <option value="商業理財">商業理財</option>
-                                <option value="藝術設計">藝術設計</option>
-                                <option value="人文史地">人文史地</option>
-                                <option value="心理勵志">心理勵志</option>
-                                <option value="宗教命理">宗教命理</option>
-                                <option value="自然科普">自然科普</option>
-                                <option value="醫療保健">醫療保健</option>
-                                <option value="生活風格">生活風格</option>
-                                <option value="童書/青少年文學">童書/青少年文學</option>
-                                <option value="考試用書/國中小參考書/教科書">考試用書/國中小參考書/教科書</option>
-                                <option value="影視偶像">影視偶像</option>
-                                <option value="漫畫/圖文書">漫畫/圖文書</option>
-                                <option value="語言學習">語言學習</option>
-                                <option value="電腦資訊">電腦資訊</option>
-                                <option value="其他">其他</option>
+                                <?
+                                    $sqlc = "select cat_name from cat";
+                                    $rsc = mysqli_query($link,$sqlc);
+                                    while($recordc = mysqli_fetch_row($rsc)){
+                                ?>
+                                        <option value="<? echo $recordc[0];?>"><? echo $recordc[0];?></option>
+                                <?
+                                    }
+                                ?>
                             </select>
                             </div>
                         <input type="text" id="search" name="searchtxt" placeholder="輸入書名" value=<?php echo $searchtxt ?>>
@@ -199,20 +193,20 @@ $link=mysqli_connect("localhost","root","12345678","user");
                         @$_SESSION['searchtxt'] = $searchtxt;
                         @$_SESSION['cat'] = $cat;
                         if(empty($searchtxt) AND empty($cat)){
-	                       $sql1="select * from book where buy_b = 'b'";
-                           $sql2="select * from book where buy_b = 'br'";
+	                       $sql1="select * from book where buy_b = 'b' and owner_id != '$record[0]' order by book_id";
+                           $sql2="select * from book where buy_b = 'br' and owner_id != '$record[0]' order by book_id";
 		                }
                         elseif(empty($cat)){
-                            $sql1="select * from book where buy_b = 'b' and book_name like '%$searchtxt%' order by book_id"; 
-                            $sql2="select * from book where buy_b = 'br' and book_name like '%$searchtxt%' order by book_id";
+                            $sql1="select * from book where buy_b = 'b' and book_name like '%$searchtxt%' and owner_id != '$record[0]' order by book_id"; 
+                            $sql2="select * from book where buy_b = 'br' and book_name like '%$searchtxt%' and owner_id != '$record[0]' order by book_id";
                         }
                         elseif(empty($searchtxt)){
-                            $sql1="select * from book where buy_b = 'b' and book_cat = '$cat' order by book_id"; 
-                            $sql2="select * from book where buy_b = 'br' and book_cat = '$cat' order by book_id";
+                            $sql1="select * from book where buy_b = 'b' and book_cat = '$cat' and owner_id != '$record[0]' order by book_id"; 
+                            $sql2="select * from book where buy_b = 'br' and book_cat = '$cat' and owner_id != '$record[0]' order by book_id";
                         }
                         else{
-                            $sql1="select * from book where buy_b = 'b' and book_name like '%$searchtxt%' and book_cat = '$cat' order by book_id"; 
-                            $sql2="select * from book where buy_b = 'br' and book_name like '%$searchtxt%' and book_cat = '$cat' order by book_id";
+                            $sql1="select * from book where buy_b = 'b' and book_name like '%$searchtxt%' and book_cat = '$cat' and owner_id != '$record[0]' order by book_id"; 
+                            $sql2="select * from book where buy_b = 'br' and book_name like '%$searchtxt%' and book_cat = '$cat' and owner_id != '$record[0]' order by book_id";
                         }
                         $rs1=mysqli_query($link,$sql1);
                         //買賣分頁
@@ -236,7 +230,6 @@ $link=mysqli_connect("localhost","root","12345678","user");
                                                     <div class="col-md-4">
                                                             <div class="container">
                                                             <div class="row text-center">
-                                                    <form method="post" action="book_info.php">
                                                     <?php
                                                     //借書輸出
                                                         if($data_nums2==0){
@@ -247,6 +240,7 @@ $link=mysqli_connect("localhost","root","12345678","user");
                                                         else{
                                                             while($record = mysqli_fetch_row($rs2)){
                                                     ?>
+                                                    <form method="post" action="book_info.php">
                                                         <div style="float:left; width:32%; height: 30%;margin: 3px; border: 1px solid;">
                                                         <img src="<?php echo $record[6];?>">
                                                         <hr>
@@ -254,14 +248,25 @@ $link=mysqli_connect("localhost","root","12345678","user");
                                                             <p style="font-size: 15px; color: #000;"><?php echo $record[2];?></p>
                                                             <input type="hidden" name="book" value="<? echo $record[2];?>">
                                                             <p style="font-size: 15px; color: #000;">作者: <?php echo $record[3];?></p>
-                                                            <input class="btn btn-warning" type="submit" name="submit" value="我要借書">
+                                                            <input type="hidden" name="own" value="<? echo $record[1];?>">
+                                                            <?
+                                                            if($record[7] != 1){
+                                                    ?>
+                                                            <input  class="btn btn-warning" type="submit" name="submit" value="借書" style="border-radius: 5px;">
+                                                    <?
+                                                            }else{
+                                                    ?>
+                                                            <input  class="btn btn-warning" type="submit" name="submit" value="已借出" style="border-radius: 5px;" disabled>
+                                                    <?
+                                                            }
+                                                    ?>
                                                         </div>
                                                         </div>
+                                                        </form>
                                                     <?php
                                                         }
                                                         }
                                                     ?>
-                                                    </form>
                                                     <footer id="footer" style=" padding: 5px;">
                                                     <?php
                                                     //分頁頁碼

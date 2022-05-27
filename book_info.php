@@ -2,15 +2,10 @@
 require "connect.php";
 $web=new web;
 session_start();
-if(isset($_GET["status"]) && $_GET["status"]=="logout"){
-    session_destroy();
-}
-else{
-    if(isset($_SESSION["user_id"])){
-        $type=$_SESSION["user_id"];
-    }     
-}
 include "logincheck.php";
+$link=mysqli_connect("localhost","root","12345678","user");
+@$book = $_POST['book'];
+@$own = $_POST['own'];
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -23,7 +18,7 @@ include "logincheck.php";
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>學人旅店預約系統</title>
+    <title>書籍共享系統</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Free HTML5 Template by FREEHTML5.CO" />
     <meta name="keywords" content="free html5, free template, free bootstrap, html5, css3, mobile first, responsive" />
@@ -129,7 +124,18 @@ include "logincheck.php";
             position: relative;
             display: none;
         }
-
+        img{
+            width: 277px;
+            height: 389px;
+            float: right;
+            margin-top: 50px;
+        }
+        html{
+            overflow: auto; 
+        }
+        p{
+            color: #000;
+        }
     </style>
 </head>
 
@@ -141,42 +147,12 @@ include "logincheck.php";
                     <div class="container">
                         <div class="nav-header">
                             <a href="#" class="js-fh5co-nav-toggle fh5co-nav-toggle"><i></i></a>
-                            <h1 id="fh5co-logo"><a href="index.php">學人旅店預約系統</a></h1>
+                            <h1 id="fh5co-logo"><a href="index.php">書籍共享系統</a></h1>
                             <nav id="fh5co-menu-wrap" role="navigation">
                                 <ul class="sf-menu" id="fh5co-primary-menu">
                                     <?php
-                            if(isset($type)){
-                                if($type=="user"){
-                                    echo "<li><a href='index.php'>主頁</a></li><li><a href='reserve.php' class='active'>預約訂房</a></li><li><a href='reservecancel.php'>取消預約</a></li><li>
-										<a href='#' class='fh5co-sub-ddown'>我的最愛</a>
-										<ul class='fh5co-sub-menu'>";
-                                    if($arr[0]==0){
-                                        echo "<li id='li1'><a href='#'>總統單人房</a></li>";
-                                    }
-                                    else{
-                                        echo "<li id='li1' style='display:block'><a href='#'>總統單人房</a></li>";
-                                    }
-                                    if($arr[1]==0){
-                                        echo "<li id='li2'><a href='#'>總統雙人房</a></li>";
-                                    }
-                                    else{
-                                        echo "<li id='li2' style='display:block'><a href='#'>總統雙人房</a></li>";
-                                    }
-                                    if($arr[2]==0){
-                                        echo "<li id='li3'><a href='#'>總統家庭房</a></li>";
-                                    }
-                                    else{
-                                        echo "<li id='li3' style='display:block'><a href='#'>總統家庭房</a></li>";
-                                    }		
-										echo "</ul>
-									</li><li><a href='index.php?status=logout'>登出</a></li>";
-                                }
-                                if($type=="manager"){
-                                    echo "<li><a class='active' href='index.php'>主頁</a></li><li><a href='announce.php'>公告區</a></li><li><a href='amount.php'>營運報表</a></li><a href='order.php'>後台管理</a></li><li><a href='index.php?status=logout'>登出</a></li>";
-                                }
-                                
-                            }
-                            ?>
+                                        include "navbar.php"
+                                    ?>
                                 </ul>
                             </nav>
                         </div>
@@ -185,14 +161,13 @@ include "logincheck.php";
 
             </div>
             <!-- end:fh5co-header -->
-            <div class="fh5co-parallax" style="background-image: url(images/slider1.jpeg);" data-stellar-background-ratio="0.5">
+            <div class="fh5co-parallax" style="background-image: url(images/147945.jpg);" data-stellar-background-ratio="0.5">
                 <div class="overlay"></div>
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12 col-md-offset-0 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-center fh5co-table">
                             <div class="fh5co-intro fh5co-table-cell">
-                                <h1 class="text-center"><?php echo $row[1]."預約";?></h1>
-
+                                <h1 class="text-center">書籍預約</h1>
                             </div>
                         </div>
                     </div>
@@ -200,55 +175,65 @@ include "logincheck.php";
             </div>
 
 
-            <div id="hotel-facilities">
-                <div class="container">
-                    <div id="tabs">
-
-                        <div class="tab-content-container">
-                            <div class="tab-content active show" data-tab-content="tab1">
-                                <div class="container">
-                                    <form action="reserve2.php" method="post">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <img src="images/tab_img_5.jpeg" class="img-responsive" alt="Image">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <span class="super-heading-sm">最高規格</span>
-                                                <h3 class="heading"><?php echo $row[1];?></h3>
-                                                <p><?php echo $row[4];?></p>
-                                                <p>房間售價：<?php echo "NT$".strval($row[3])."/晚";?></p>
-                                                <p>入住日期：<input type="date" name="start"></p>
-                                                <p>退房日期：<input type="date" name="end"></p>
-                                                <p>適用優惠: <select name="announce">
-                                                <option value='0'></option>
-                                                <?php
-                                                $date=date("Y-m-d");
-                                                $result3=$web->announce(); while($row3=mysqli_fetch_row($result3)){
-                                                    if(strtotime($row3[4])-strtotime($date)>0 and strtotime($date)-strtotime($row3[3])>0){
-                                                        echo "<option value='$row3[0]'>".$row3[1]."--".$row3[2]."</option>";
-                                                    }
-                                                }
-                                                ?>
-                                                </select></p>
-                                                <br>
-                                            
-                                                <p><button class="btn btn-primary btn-luxe-primary">訂房<i class="ti-angle-right"></i></button></p>
-                                                <input type="hidden" name="roomid" value="<?php echo $roomid;?>">
-                                                <input type="hidden" name="date" value="<?php echo $date;?>">
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-
+            <div>
+                <div class="container" style="margin-top: 50px;">
+                    <?
+                        $sql1="SELECT b.*, u.user_t, u.user_name FROM book AS b, user as u WHERE b.book_name='$book' AND  u.user_id = '$own';";
+                        $rs=mysqli_query($link,$sql);
+                        $record = mysqli_fetch_row($rs);
+                        $rs1=mysqli_query($link,$sql1);
+                        while($record1 = mysqli_fetch_row($rs1)){
+                            if($record1[8]=='b'){
+                    ?>
+                    <a href='books.php' class='btn btn-primary btn-luxe-primary' style="margin-top: 20px;">返回上一頁<i class='ti-angle-right'></i></a>
+                    <?
+                            }
+                            else{
+                    ?>
+                    <a href='book_br.php' class='btn btn-primary btn-luxe-primary' style="margin-top: 20px;">返回上一頁<i class='ti-angle-right'></i></a>
+                    <?
+                            }
+                    ?>
+                    <form action="dblink.php" method="post">
+                        <input type=hidden name="method" value="insert_b">
+                        <div class="col-md-6">
+                            <img src="<?php echo $record1[6];?>" class="img-responsive" alt="Image">
                         </div>
-                    </div>
+                        <div class="col-md-6">
+                            <span class="super-heading-sm">書籍資料</span>
+                            <input type=hidden name="id" value="<? echo $record1[0]?>">
+                            <h3 class="heading">書名: <?php echo $record1[2];?></h3>
+                            <p>出版社: <?php echo $record1[4];?></p>
+                            <p>作者：<?php echo $record1[3];?></p>
+                            <p>類別：<?php echo $record1[5];?></p>
+                            <p>擁有者：<?php echo $record1[11];?></p>
+                            <p>擁有者電話：<?php echo $record1[10];?></p>
+                            <p>備註(選填): <input type="text" name="text"
+                                      maxlength="50" value="<? echo @$text ?>"></p>
+                            <input type="hidden" name="buy_id" value="<? echo $record[0]?>">
+                            <?
+                                if($record1[8]=='b'){
+                            ?>
+                                    <p>售價：$<?php echo $record1[9];?></p>
+                                    <p><button class="btn btn-primary btn-luxe-primary">確定買書<i class="ti-angle-right"></i></button></p>
+                            <?
+                                }
+                                else if($record1[8]=='br'){
+                            ?>
+                                <p><button class="btn btn-primary btn-luxe-primary">確定借書<i class="ti-angle-right"></i></button></p>
+                            <?
+                                }
+                            ?>
+                        </div>
+                    </form>
+                    <?
+                        }
+                    ?>
                 </div>
             </div>
 
         </div>
         <!-- END fh5co-page -->
-
     </div>
     <!-- END fh5co-wrapper -->
 

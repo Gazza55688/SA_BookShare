@@ -2,25 +2,8 @@
 require "connect.php";
 $web=new web;
 session_start();
-if(!isset($_SESSION["type"])){
-    echo "<script> {window.alert('請先登入');location.href='login.php'} </script>";
-}
-else{
-    if($_SESSION["type"]!="user"){
-        echo "<script> {window.alert('請先登入系統');location.href='index.php'} </script>";
-    }
-}
-if(isset($_SESSION["type"])){
-    $type=$_SESSION["type"];
-} 
-if(isset($_GET["delid"])){
-    if($web->announceDelete($_GET["delid"])){
-        echo "<script> {window.alert('刪除成功');location.href='announce.php'} </script>";
-    }
-    else{
-        echo "<script> {window.alert('刪除失敗');location.href='announce.php'} </script>";
-    }
-}
+include "logincheck.php";
+//$arr=$web->userLove($userid);
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -33,7 +16,7 @@ if(isset($_GET["delid"])){
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>我的商品 &mdash; 100% Free Fully Responsive HTML5 Template by FREEHTML5.co</title>
+    <title>管理訂單</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Free HTML5 Template by FREEHTML5.CO" />
     <meta name="keywords" content="free html5, free template, free bootstrap, html5, css3, mobile first, responsive" />
@@ -98,7 +81,95 @@ if(isset($_GET["delid"])){
     <!--[if lt IE 9]>
 	<script src="js/respond.min.js"></script>
 	<![endif]-->
+	<style>
+        table {
+            border: 0;
+            border-collapse: collapse;
+        }
 
+        th {
+            background-color: #34393d;
+            border: solid 1px #000;
+            padding: 8px;
+            color: #fff;
+            text-align: center;
+        }
+
+        td {
+            border: solid 1px #34393d;
+            text-align: center;
+            padding: 8px;
+            color: #757575;
+        }
+
+        .bt {
+            color: #fff;
+            background-color: #f36b4f;
+            border: 1px solid #f36b4f;
+            font-size: 20px;
+        }
+
+        .bt:hover {
+            background-color: #34393d;
+            border: 1px solid #34393d;
+        }
+
+        .reservation {
+            color: #fff;
+            background-color: #d9593f;
+            border: 1px solid #d9593f;
+            width: auto;
+            height: auto;
+        }
+
+        .reservation:hover {
+            color: #fff;
+            background-color: #696c6f;
+            border: 1px solid #696c6f;
+
+        }
+        #li1 {
+            display: none;
+        }
+
+        #li2 {
+            display: none;
+        }
+
+        #li3 {
+            display: none;
+        }
+        .div-a-1 {
+            position: relative;
+        }
+
+        .div-b-1 {
+            position: relative;
+            display: none;
+            
+        }
+
+        .div-a-2 {
+            position: relative;
+
+        }
+
+        .div-b-2 {
+            position: relative;
+            display: none;
+        }
+
+        .div-a-3 {
+            position: relative;
+
+        }
+
+        .div-b-3 {
+            position: relative;
+            display: none;
+        }
+
+    </style>
 </head>
 
 <body>
@@ -113,16 +184,8 @@ if(isset($_GET["delid"])){
                             <nav id="fh5co-menu-wrap" role="navigation">
                                 <ul class="sf-menu" id="fh5co-primary-menu">
                                     <?php
-                            if(isset($type)){
-                                if($type=="user"){
-                                    echo "<li><a href='index.php'>首頁</a></li><li><a href='books.php'>查看現有書籍</a></li><li><li><a class='active' href='my.php'>我的商品</a></li><li><a href='order.php'>檢視訂單</a></li><li><a href='cart.php'>購物車</a>
-								    </li><li><a href='user.php'>使用者資訊</a></li><li><a href='index.php?status=logout'>登出</a></li>";
-                                }
-                            }
-                            else{
-                                echo "<li><a class='active' href='index.php'>主頁</a></li><li><a href='login.php'>登入</a></li>";
-                            }
-                            ?>
+                                        include "navbar.php";
+                                    ?>
                                 </ul>
                             </nav>
                         </div>
@@ -137,82 +200,103 @@ if(isset($_GET["delid"])){
                     <div class="row">
                         <div class="col-md-12 col-md-offset-0 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-center fh5co-table">
                             <div class="fh5co-intro fh5co-table-cell">
-                                <h1 class="text-center">我的商品</h1>
-
+                                <h1 class="text-center">我的書籍列表</h1>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div id="featured-hotel" class="fh5co-bg-color" style="background-color:white">
-                <div class="container">
+            </div><br>
+            <div>
+                <div style="width: 100%; background-color:#e6e6e6;padding-left:40px;padding-right:40px; margin-bottom: 40px;padding-bottom:40px">
+                    <a href='index.php' class='btn btn-primary btn-luxe-primary' style="margin-top: 20px;">返回上一頁<i class='ti-angle-right'></i></a>
                     <div class="row">
-                        <div class="col-md-12">
-                            <div class="section-title text-center">
-                                <h2>我的商品</h2>
+                        <div class="col-md-12" style="height: 50px;">
+                            <div class="section-title text-center" style="padding-top:10px;">
+                                <h2>刊登書籍(由上架時間排序)</h2>
                             </div>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <?php
-                $re=$web->announce();
-                $i=0;
-                $count=mysqli_num_rows($re);
-                while($row=mysqli_fetch_row($re)){
-                    if($i%2==0){
-                        echo "<div class='feature-full-2col'>
-					<div class='f-hotel' style='border:1px black solid'>
-						<div class='image' style='background-image: url(images/hotel_feature_2.jpeg); width:300px'>
-							
-						</div>
-						<div class='desc'>
-							<h3>$row[1]</h3>
-							<p>$row[2]</p>
-                            <p>優惠期間:<br>".$row[3]."~".$row[4]."</p>
-							<span><a href='announceupdate.php?updateid=$row[0]' class='btn btn-primary btn-luxe-primary'>修改<i class='ti-angle-right'></i></a></span><span><a href='announce.php?delid=$row[0]' class='btn btn-primary btn-luxe-primary' onclick=\"return confirm('確定刪除?')\">刪除<i class='ti-angle-right'></i></a></span>
-						</div>
-					</div>";
-                    }
-                    if($i%2!=0){
-                        echo "<div class='f-hotel' style='border:1px black solid'>
-						<div class='image' style='background-image: url(images/hotel_feature_2.jpeg);width:300px'>
-							
-						</div>
-						<div class='desc'>
-							<h3>$row[1]</h3>
-							<p>$row[2]</p>
-                            <p>優惠期間:<br>".$row[3]."~".$row[4]."</p>
-							<span><a href='announceupdate.php?updateid=$row[0]' class='btn btn-primary btn-luxe-primary'>修改<i class='ti-angle-right'></i></a></span><span><a href='announce.php?delid=$row[0]' class='btn btn-primary btn-luxe-primary' onclick=\"return confirm('確定刪除?')\">刪除<i class='ti-angle-right'></i></a></span>
-						</div>
-					</div>";
-                    }
-                    if($i%2!=0 and $i%2<2){
-                        echo "</div>";
-                    }
-                    if($i%2==0 and $i%2>2){
-                        echo "<div class='f-hotel' style='border:1px black solid'>
-						<div class='image' style='background-image: url(images/hotel_feature_2.jpeg);width:300px'>
-							
-						</div>
-						<div class='desc'>
-							<h3>$row[1]</h3>
-							<p>$row[2]</p><br>
-                            <p>優惠期間:<br>".$row[3]."~".$row[4]."</p>
-							<span><a href='announce.php?updateid=$row[0]' class='btn btn-primary btn-luxe-primary'>修改<i class='ti-angle-right'></i></a></span><span><a href='announceupdate.php?delid=$row[0]' class='btn btn-primary btn-luxe-primary' onclick=\"return confirm('確定刪除?')\">刪除<i class='ti-angle-right'></i></a></span>
-						</div>
-					</div></div>";
-                    }
-                    
-                    if($i+1==$count){
-                        echo "</div>";
-                    }
-                    $i++;
-                }
-                ?>
-
-
+                    <div class="row" style="text-align:center">
+                                <?php
+                                $link = mysqli_connect("localhost","root","12345678","user");
+                                $sqlt = "select DISTINCT b.book_name, b.book_athor, b.book_pub, b.buy_b, b.s_price, b.book_id from book as b, user as u where b.owner_id = '$record[0]'";
+                                $result = mysqli_query($link, $sqlt);
+                                $row=mysqli_num_rows($result);
+                                $per = 9; //每頁顯示項目數量
+                                @$pages = ceil($row/$per); //取得不小於值的下一個整數
+                                if (!isset($_GET["page"])){ //假如$_GET["page"]未設置
+                                    $page=1; //則在此設定起始頁數
+                                } else {
+                                    $page = intval($_GET["page"]); //確認頁數只能夠是數值資料
+                                }
+                                $start = ($page-1)*$per; //每一頁開始的資料序號
+                                @$rs1 = mysqli_query($link, $sqlt.' LIMIT '.$start.', '.$per)or die("Error");
+                                if($row > 0){
+                                ?>
+                                <table style="margin-right:auto;margin-left:auto;">
+                                <thead>
+                                    <tr>
+                                        <th>書名</th>
+                                        <th>作者</th>
+                                        <th>出版社</th>
+                                        <th>借書/賣書</th>
+                                        <th>價格</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <?
+                                    while($row=mysqli_fetch_row($result)){
+                                ?>
+                                        <form action="dblink2.php" method="post">
+                                <?
+                                         $id = $row[5];
+                                        if($row[3]=="b"){
+                                            $row[3]="買";
+                                            $row[4]="NT$$row[4]";
+                                        }
+                                        else{
+                                            $row[3]="借";
+                                            $row[4]="借書";
+                                        }
+                                        echo "<tr>
+                                        <td>$row[0]</td>
+                                        <td>$row[1]</td>
+                                        <td>$row[2]</td>
+                                        <td>$row[3]</td>
+                                        <td>$row[4]</td>
+                                        ";
+                                ?>
+                                <input type="hidden" name="bkid" value="<? echo $id;?>">
+                                <input type="hidden" name="method" value="takedown">
+                                <td><input class="btn btn-warning" type="submit" value="下架書籍" style="border-radius: 5px;"></td>
+                                        </form>
+                                <?
+                                }
+                                }
+                                else{
+                                    echo "<div class='section-title text-center' style='padding-top:20px'>
+                                    <h1 style='color:red'>你沒有訂單</h1>
+                                    </div>";
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                        <footer id="footer" style=" padding: 5px;">
+                         <?php
+                        //分頁頁碼
+                        echo '共 '.$row.' 筆-在第 '.$page.' 頁-共 '.$pages.' 頁';
+                        echo "<br /><a href=?page=1>第一頁</a> ";
+                        echo "第 ";
+                        for( $i=1 ; $i<=$pages ; $i++ ) {
+                        if ( $page-3 < $i && $i < $page+3 ) {
+                            echo "<a href=?page=".$i.">".$i."</a> ";
+                            }
+                        } 
+                        echo " 頁 <a href=?page=".$pages.">末頁</a><br /><br />";
+                        ?>
+                        </footer>
                     </div>
 
                 </div>

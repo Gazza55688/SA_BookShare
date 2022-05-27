@@ -3,7 +3,7 @@ require "connect.php";
 $web=new web;
 session_start();
 include "logincheck.php";
-$result=$web->record();
+//$arr=$web->userLove($userid);
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -16,7 +16,7 @@ $result=$web->record();
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>檢視訂單</title>
+    <title>管理訂單</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Free HTML5 Template by FREEHTML5.CO" />
     <meta name="keywords" content="free html5, free template, free bootstrap, html5, css3, mobile first, responsive" />
@@ -81,7 +81,7 @@ $result=$web->record();
     <!--[if lt IE 9]>
 	<script src="js/respond.min.js"></script>
 	<![endif]-->
-    <style>
+	<style>
         table {
             border: 0;
             border-collapse: collapse;
@@ -128,6 +128,46 @@ $result=$web->record();
             border: 1px solid #696c6f;
 
         }
+        #li1 {
+            display: none;
+        }
+
+        #li2 {
+            display: none;
+        }
+
+        #li3 {
+            display: none;
+        }
+        .div-a-1 {
+            position: relative;
+        }
+
+        .div-b-1 {
+            position: relative;
+            display: none;
+            
+        }
+
+        .div-a-2 {
+            position: relative;
+
+        }
+
+        .div-b-2 {
+            position: relative;
+            display: none;
+        }
+
+        .div-a-3 {
+            position: relative;
+
+        }
+
+        .div-b-3 {
+            position: relative;
+            display: none;
+        }
 
     </style>
 </head>
@@ -160,21 +200,19 @@ $result=$web->record();
                     <div class="row">
                         <div class="col-md-12 col-md-offset-0 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-center fh5co-table">
                             <div class="fh5co-intro fh5co-table-cell">
-                                <h1 class="text-center">檢視訂單</h1>
-
+                                <h1 class="text-center">管理訂單</h1>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <br>
+            </div><br>
             <div>
                 <div style="width: 100%; background-color:#e6e6e6;padding-left:40px;padding-right:40px; margin-bottom: 40px;padding-bottom:40px">
                     <a href='index.php' class='btn btn-primary btn-luxe-primary' style="margin-top: 20px;">返回上一頁<i class='ti-angle-right'></i></a>
                     <div class="row">
                         <div class="col-md-12" style="height: 50px;">
                             <div class="section-title text-center" style="padding-top:10px;">
-                                <h2>訂單列表</h2>
+                                <h2>收到訂單列表</h2>
                             </div>
                         </div>
                     </div>
@@ -182,7 +220,7 @@ $result=$web->record();
                     <div class="row" style="text-align:center">
                                 <?php
                                 $link = mysqli_connect("localhost","root","12345678","user");
-                                $sqlt = "select b.book_name, u.user_name, u.user_t, b.buy_b, b.s_price, t.t_date, b.buy_sit,t.trade_id, b.book_id from trade as t, user as u, book as b where t.buy_id = '$record[0]' and b.book_id = t.book_id and u.user_id = b.owner_id";
+                                $sqlt = "select b.book_name, u.user_name, u.user_t, b.buy_b, t.buy_text, b.s_price, t.t_date, t.trade_id, b.book_id from trade as t, user as u, book as b where b.book_id = t.book_id and b.owner_id = '$record[0]' and  u.user_id = t.buy_id and t.t_status != 2";
                                 $result = mysqli_query($link, $sqlt);
                                 $row=mysqli_num_rows($result);
                                 $per = 9; //每頁顯示項目數量
@@ -200,40 +238,31 @@ $result=$web->record();
                                 <thead>
                                     <tr>
                                         <th>書名</th>
-                                        <th>書籍持有者名稱</th>
-                                        <th>書籍持有者手機</th>
+                                        <th>訂單申請人</th>
+                                        <th>訂單申請人電話</th>
                                         <th>借書/賣書</th>
+                                        <th>備註</th>
                                         <th>價格</th>
                                         <th>訂單時間</th>
-                                        <th>狀態</th>
-                                        <th>功能</th>
+                                        <th></th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 <?
                                     while($row=mysqli_fetch_row($result)){
                                 ?>
-                                    <form action="dblink2.php" method="post">
-                                    <?
+                                        <form action="dblink2.php" method="post">
+                                <?
                                         $tid = $row[7];
                                         $bkid = $row[8];
                                         if($row[3]=="b"){
                                             $row[3]="買";
-                                            $row[4]="NT$$row[4]";
+                                            $row[5]="NT$$row[5]";
                                         }
                                         else{
                                             $row[3]="借";
-                                            $row[4]="借書";
-                                        }
-                                        $status = $row[6];
-                                        if($row[6]==0){
-                                            $row[6]="持有者未確認";
-                                        }
-                                        else if($row[6]==1){
-                                            $row[6]="持有者同意，請等候電話";
-                                        }
-                                        else{
-                                            $row[6]="持有者拒絕你的訂單";
+                                            $row[5]="借書";
                                         }
                                         echo "<tr>
                                         <td>$row[0]</td>
@@ -245,18 +274,14 @@ $result=$web->record();
                                         <td>$row[6]</td>
                                         ";
                                 ?>
-                                <input type="hidden" name="delid" value="<? echo $tid;?>">
                                 <input type="hidden" name="bkid" value="<? echo $bkid;?>">
+                                <input type="hidden" name="tid" value="<? echo $tid;?>">
+                                <input type="hidden" name="method" value="judge">
+                                <td><input class="btn btn-warning" type="submit" name="agree" value="同意交易" style="border-radius: 5px;"></td>
+                                <td><input class="btn btn-warning" type="submit" name="no" value="拒絕交易" style="border-radius: 5px;"></td>
+                                        </form>
                                 <?
-                                    if($status != 1){
-                                ?>
-                                <input type="hidden" name="method" value="delete">
-                                <td><input class="btn btn-warning" type="submit" value="取消訂單" style="border-radius: 5px;"></td>
-                                </form>
-                                <?
-                                    }
-                                    else{ echo "<td></td>";}
-                                  }
+                                }
                                 }
                                 else{
                                     echo "<div class='section-title text-center' style='padding-top:20px'>
@@ -284,6 +309,7 @@ $result=$web->record();
 
                 </div>
             </div>
+
         </div>
         <!-- END fh5co-page -->
 
@@ -318,4 +344,3 @@ $result=$web->record();
 </body>
 
 </html>
-

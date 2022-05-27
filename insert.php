@@ -119,16 +119,8 @@ else{
                             <nav id="fh5co-menu-wrap" role="navigation">
                                 <ul class="sf-menu" id="fh5co-primary-menu">
                                     <?php
-                            if(isset($type)){
-                                if($type=="user"){
-                                    echo  "<li><a href='index.php'>首頁</a></li><li><a href='books.php'>查看現有書籍</a></li><li><li><a href='my.php'>我的商品</a></li><li><a href='order.php'>檢視訂單</a></li><li><a href='cart.php'>購物車</a>
-								    </li><li><a href='user.php'>使用者資訊</a></li><li><a href='index.php?status=logout'>登出</a></li>";
-                                }
-                            }
-                            else{
-                                echo "<li><a class='active' href='index.php'>主頁</a></li><li><a href='login.php'>登入</a></li>";
-                            }
-                            ?>
+                                        include "navbar.php";
+                                    ?>
                                 </ul>
                             </nav>
                         </div>
@@ -151,9 +143,9 @@ else{
                 </div>
             </div>
 
-            <div id="featured-hotel" class="fh5co-bg-color" style="background-color:white">
+            <div class="fh5co-bg-color" style="background-color:white">
                 <div class="container">
-                    <a href='books.php' class='btn btn-primary btn-luxe-primary'>回上一頁<i class='ti-angle-right'></i></a>
+                    <a href='books.php' class='btn btn-primary btn-luxe-primary' style="margin-top: 20px;">回上一頁<i class='ti-angle-right'></i></a>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="section-title text-center">
@@ -186,28 +178,22 @@ else{
                                             <div class="input-group mb-3">
                                                 <select name="book_cat" class="form-select" id="inputGroupSelect02" required>
                                                     <option selected>請選擇...</option>
-                                                    <option value="文學小說">文學小說</option>
-                                                    <option value="商業理財">商業理財</option>
-                                                    <option value="藝術設計">藝術設計</option>
-                                                    <option value="人文史地">人文史地</option>
-                                                    <option value="心理勵志">心理勵志</option>
-                                                    <option value="宗教命理">宗教命理</option>
-                                                    <option value="自然科普">自然科普</option>
-                                                    <option value="醫療保健">醫療保健</option>
-                                                    <option value="生活風格">生活風格</option>
-                                                    <option value="童書/青少年文學">童書/青少年文學</option>
-                                                    <option value="考試用書/國中小參考書/教科書">考試用書/國中小參考書/教科書</option>
-                                                    <option value="影視偶像">影視偶像</option>
-                                                    <option value="漫畫/圖文書">漫畫/圖文書</option>
-                                                    <option value="語言學習">語言學習</option>
-                                                    <option value="電腦資訊">電腦資訊</option>
-                                                    <option value="其他">其他</option>
+                                                    <?
+                                                    $link=mysqli_connect("localhost","root","12345678","user");
+                                                    $sqlc = "select cat_name from cat";
+                                                    $rsc = mysqli_query($link,$sqlc);
+                                                    while($record = mysqli_fetch_row($rsc)){
+                                                    ?>
+                                                        <option value="<? echo $record[0];?>"><? echo $record[0];?></option>
+                                                    <?
+                                                        }
+                                                    ?>
                                                 </select>
                                             </div>
                                         </label>
 										<br>
                                         <label>
-                                            圖片：<input type="file" name='book_pic' value='<?php echo $book_pic ?>' accept="image/jpeg,image/jpg,image/gif,image/png" required>
+                                            圖片：<input type="file" name='book_pic' value='images/<?php echo $book_pic ?>' accept="image/jpeg,image/jpg,image/gif,image/png" required>
                                         </label>
 										<br>
                                         <?

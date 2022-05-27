@@ -2,17 +2,7 @@
 require "connect.php";
 $web=new web;
 session_start();
-if(!isset($_SESSION["type"])){
-    echo "<script> {window.alert('請先登入');location.href='login.php'} </script>";
-}
-else{
-    if($_SESSION["type"]!="user"){
-        echo "<script> {window.alert('請先登入系統');location.href='index.php'} </script>";
-    }
-}
-if(isset($_SESSION["type"])){
-    $type=$_SESSION["type"];
-} 
+include "logincheck.php";
 if(isset($_GET["updateid"])){
     $re=$web->announceShow($_GET["updateid"]);
     $row=mysqli_fetch_row($re);
