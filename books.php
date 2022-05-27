@@ -227,7 +227,7 @@ $link=mysqli_connect("localhost","root","12345678","user");
                                             <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
                                                     <?php
                                                     //賣書輸出
-                                                        if($data_nums2==0){
+                                                        if($data_nums==0){
                                                                 echo "<div class='section-title text-center' style='padding-top:20px'>
                                                                 <h1 style='color:red'>目前無相關書籍</h1>
                                                                 </div>";
