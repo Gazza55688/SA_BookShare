@@ -208,8 +208,6 @@ $link=mysqli_connect("localhost","root","12345678","user");
                             <p>類別：<?php echo $record1[5];?></p>
                             <p>擁有者：<?php echo $record1[11];?></p>
                             <p>擁有者電話：<?php echo $record1[10];?></p>
-                            <p>備註(選填): <input type="text" name="text"
-                                      maxlength="50" value="<? echo @$text ?>"></p>
                             <input type="hidden" name="buy_id" value="<? echo $record[0]?>">
                             <?
                                 if($record1[8]=='b'){

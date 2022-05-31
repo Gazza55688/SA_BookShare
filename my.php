@@ -220,11 +220,12 @@ include "logincheck.php";
                     <div class="row" style="text-align:center">
                                 <?php
                                 $link = mysqli_connect("localhost","root","12345678","user");
-                                $sqlt = "select DISTINCT b.book_name, b.book_athor, b.book_pub, b.buy_b, b.s_price, b.book_id from book as b, user as u where b.owner_id = '$record[0]'";
+                                $sqlt = "select DISTINCT b.book_name, b.book_athor, b.book_pub, b.buy_b, b.s_price,  b.book_cat, b.book_id from book as b, user as u where b.owner_id = '$record[0]'";
                                 $result = mysqli_query($link, $sqlt);
-                                $row=mysqli_num_rows($result);
+                                $record = mysqli_num_rows($result);
+                                $row = mysqli_num_rows($result);
                                 $per = 9; //每頁顯示項目數量
-                                @$pages = ceil($row/$per); //取得不小於值的下一個整數
+                                @$pages = ceil($record/$per); //取得不小於值的下一個整數
                                 if (!isset($_GET["page"])){ //假如$_GET["page"]未設置
                                     $page=1; //則在此設定起始頁數
                                 } else {
@@ -242,6 +243,7 @@ include "logincheck.php";
                                         <th>出版社</th>
                                         <th>借書/賣書</th>
                                         <th>價格</th>
+                                        <th>類別</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -251,7 +253,7 @@ include "logincheck.php";
                                 ?>
                                         <form action="dblink2.php" method="post">
                                 <?
-                                         $id = $row[5];
+                                         $id = $row[6];
                                         if($row[3]=="b"){
                                             $row[3]="買";
                                             $row[4]="NT$$row[4]";
@@ -266,6 +268,7 @@ include "logincheck.php";
                                         <td>$row[2]</td>
                                         <td>$row[3]</td>
                                         <td>$row[4]</td>
+                                        <td>$row[5]</td>
                                         ";
                                 ?>
                                 <input type="hidden" name="bkid" value="<? echo $id;?>">
@@ -286,7 +289,7 @@ include "logincheck.php";
                         <footer id="footer" style=" padding: 5px;">
                          <?php
                         //分頁頁碼
-                        echo '共 '.$row.' 筆-在第 '.$page.' 頁-共 '.$pages.' 頁';
+                        echo '共 '.$record.' 筆-在第 '.$page.' 頁-共 '.$pages.' 頁';
                         echo "<br /><a href=?page=1>第一頁</a> ";
                         echo "第 ";
                         for( $i=1 ; $i<=$pages ; $i++ ) {

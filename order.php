@@ -184,9 +184,10 @@ $result=$web->record();
                                 $link = mysqli_connect("localhost","root","12345678","user");
                                 $sqlt = "select b.book_name, u.user_name, u.user_t, b.buy_b, b.s_price, t.t_date, b.buy_sit,t.trade_id, b.book_id from trade as t, user as u, book as b where t.buy_id = '$record[0]' and b.book_id = t.book_id and u.user_id = b.owner_id";
                                 $result = mysqli_query($link, $sqlt);
-                                $row=mysqli_num_rows($result);
+                                $record = mysqli_num_rows($result);
+                                $row = mysqli_num_rows($result);
                                 $per = 9; //每頁顯示項目數量
-                                @$pages = ceil($row/$per); //取得不小於值的下一個整數
+                                @$pages = ceil($record/$per); //取得不小於值的下一個整數
                                 if (!isset($_GET["page"])){ //假如$_GET["page"]未設置
                                     $page=1; //則在此設定起始頁數
                                 } else {
@@ -269,7 +270,7 @@ $result=$web->record();
                         <footer id="footer" style=" padding: 5px;">
                          <?php
                         //分頁頁碼
-                        echo '共 '.$row.' 筆-在第 '.$page.' 頁-共 '.$pages.' 頁';
+                        echo '共 '.$record.' 筆-在第 '.$page.' 頁-共 '.$pages.' 頁';
                         echo "<br /><a href=?page=1>第一頁</a> ";
                         echo "第 ";
                         for( $i=1 ; $i<=$pages ; $i++ ) {

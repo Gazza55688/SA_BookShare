@@ -193,7 +193,7 @@ else{
                                         </label>
 										<br>
                                         <label>
-                                            圖片：<input type="file" name='book_pic' value='images/<?php echo $book_pic ?>' accept="image/jpeg,image/jpg,image/gif,image/png" required>
+                                            圖片：<input type="file" name='book_pic' value='<?php echo $book_pic ?>' accept="image/jpeg,image/jpg,image/png" required>
                                         </label>
 										<br>
                                         <?

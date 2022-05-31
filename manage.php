@@ -220,11 +220,12 @@ include "logincheck.php";
                     <div class="row" style="text-align:center">
                                 <?php
                                 $link = mysqli_connect("localhost","root","12345678","user");
-                                $sqlt = "select b.book_name, u.user_name, u.user_t, b.buy_b, t.buy_text, b.s_price, t.t_date, t.trade_id, b.book_id from trade as t, user as u, book as b where b.book_id = t.book_id and b.owner_id = '$record[0]' and  u.user_id = t.buy_id and t.t_status != 2";
+                                $sqlt = "select b.book_name, u.user_name, u.user_t, b.buy_b, b.s_price, t.t_date, t.trade_id, b.book_id from trade as t, user as u, book as b where b.book_id = t.book_id and b.owner_id = '$record[0]' and  u.user_id = t.buy_id and t.t_status != 2";
                                 $result = mysqli_query($link, $sqlt);
-                                $row=mysqli_num_rows($result);
+                                $record = mysqli_num_rows($result);
+                                $row = mysqli_num_rows($result);
                                 $per = 9; //每頁顯示項目數量
-                                @$pages = ceil($row/$per); //取得不小於值的下一個整數
+                                @$pages = ceil($record/$per); //取得不小於值的下一個整數
                                 if (!isset($_GET["page"])){ //假如$_GET["page"]未設置
                                     $page=1; //則在此設定起始頁數
                                 } else {
@@ -241,7 +242,6 @@ include "logincheck.php";
                                         <th>訂單申請人</th>
                                         <th>訂單申請人電話</th>
                                         <th>借書/賣書</th>
-                                        <th>備註</th>
                                         <th>價格</th>
                                         <th>訂單時間</th>
                                         <th></th>
@@ -254,15 +254,15 @@ include "logincheck.php";
                                 ?>
                                         <form action="dblink2.php" method="post">
                                 <?
-                                        $tid = $row[7];
-                                        $bkid = $row[8];
+                                        $tid = $row[6];
+                                        $bkid = $row[7];
                                         if($row[3]=="b"){
                                             $row[3]="買";
-                                            $row[5]="NT$$row[5]";
+                                            $row[4]="NT$$row[4]";
                                         }
                                         else{
                                             $row[3]="借";
-                                            $row[5]="借書";
+                                            $row[4]="借書";
                                         }
                                         echo "<tr>
                                         <td>$row[0]</td>
@@ -271,7 +271,6 @@ include "logincheck.php";
                                         <td>$row[3]</td>
                                         <td>$row[4]</td>
                                         <td>$row[5]</td>
-                                        <td>$row[6]</td>
                                         ";
                                 ?>
                                 <input type="hidden" name="bkid" value="<? echo $bkid;?>">
@@ -279,7 +278,7 @@ include "logincheck.php";
                                 <input type="hidden" name="method" value="judge">
                                 <td><input class="btn btn-warning" type="submit" name="agree" value="同意交易" style="border-radius: 5px;"></td>
                                 <td><input class="btn btn-warning" type="submit" name="no" value="拒絕交易" style="border-radius: 5px;"></td>
-                                        </form>
+                                </form>
                                 <?
                                 }
                                 }
@@ -294,7 +293,7 @@ include "logincheck.php";
                         <footer id="footer" style=" padding: 5px;">
                          <?php
                         //分頁頁碼
-                        echo '共 '.$row.' 筆-在第 '.$page.' 頁-共 '.$pages.' 頁';
+                        echo '共 '.$record.' 筆-在第 '.$page.' 頁-共 '.$pages.' 頁';
                         echo "<br /><a href=?page=1>第一頁</a> ";
                         echo "第 ";
                         for( $i=1 ; $i<=$pages ; $i++ ) {

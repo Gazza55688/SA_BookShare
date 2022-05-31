@@ -18,7 +18,7 @@
             @$book_cat = $_POST["book_cat"];
             @$book_pic = $_POST["book_pic"];
             @$s_price = $_POST["s_price"];
-            @$sql="insert into book (owner_id, book_name, book_athor, book_pub, book_cat, book_pic, buy_b, s_price) values ('$id','$book_name','$book_athor', '$book_pub', '$book_cat','$book_pic','$status','$s_price')";
+            @$sql="insert into book (owner_id, book_name, book_athor, book_pub, book_cat, book_pic, buy_b, s_price) values ('$id','$book_name','$book_athor', '$book_pub', '$book_cat','images/$book_pic','$status','$s_price')";
             if(mysqli_query($link,$sql)){
                 echo "<script> {window.alert('新增完成');location.href='books.php'} </script>";
             }
@@ -35,8 +35,7 @@
     else if($method=="insert_b"){
         @$book_id = $_POST["id"];
         @$buy_id = $_POST["buy_id"];
-        @$buy_text = $_POST["text"];
-        @$sqlb="insert into trade (book_id, buy_id, buy_text) values ('$book_id', '$buy_id', '$buy_text')";
+        @$sqlb="insert into trade (book_id, buy_id) values ('$book_id', '$buy_id')";
         if(mysqli_query($link,$sqlb)){
             echo "<script> {window.alert('下單成功，請隨時注意訂單列表中的狀態欄!');location.href='books.php'} </script>";
         }
