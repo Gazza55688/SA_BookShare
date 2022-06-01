@@ -192,7 +192,7 @@ $link=mysqli_connect("localhost","root","12345678","user");
                     <?
                         @$_SESSION['searchtxt'] = $searchtxt;
                         @$_SESSION['cat'] = $cat;
-                        if(empty($searchtxt) AND empty($cat)){
+                        if(empty($searchtxt) AND $cat='請選擇類別(選填)'){
 	                       $sql1="select * from book where buy_b = 'b' and owner_id != '$record[0]' order by book_id";
                            $sql2="select * from book where buy_b = 'br' and owner_id != '$record[0]' order by book_id";
 		                }

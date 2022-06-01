@@ -51,6 +51,12 @@
             echo "刪除失敗";
         }
     }
+    else if($method=="rate"){
+        @$bkid = $_POST["bkid"];
+        $_SESSION['bkid'] = $bkid;
+        mysqli_query($link,$sqlc);
+        echo "<script> {window.alert('前往評價');location.href='rate.php'} </script>"
+    }
     else if($method=="takedown"){
         @$bkid = $_POST["bkid"];
         @$sqlb="delete from book where book_id = $bkid";

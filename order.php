@@ -249,11 +249,22 @@ $result=$web->record();
                                 <input type="hidden" name="delid" value="<? echo $tid;?>">
                                 <input type="hidden" name="bkid" value="<? echo $bkid;?>">
                                 <?
-                                    if($status != 1){
+                                    if($status = 0){
                                 ?>
                                 <input type="hidden" name="method" value="delete">
                                 <td><input class="btn btn-warning" type="submit" value="取消訂單" style="border-radius: 5px;"></td>
-                                </form>
+                                <?
+                                    }
+                                    else if($status = 2){
+                                ?>
+                                <input type="hidden" name="method" value="delete">
+                                <td><input class="btn btn-warning" type="submit" value="取消紀錄" style="border-radius: 5px;"></td>
+                                <?
+                                    }
+                                    else if($status = 1){
+                                ?>
+                                        <input type="hidden" name="method" value="rate">
+                                        <td><input class="btn btn-warning" type="submit" value="填寫評價" style="border-radius: 5px;"></td>
                                 <?
                                     }
                                     else{ echo "<td></td>";}
@@ -265,6 +276,7 @@ $result=$web->record();
                                     </div>";
                                 }
                                 ?>
+                                </form>
                             </tbody>
                         </table>
                         <footer id="footer" style=" padding: 5px;">

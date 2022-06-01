@@ -246,6 +246,7 @@ include "logincheck.php";
                                         <th>訂單時間</th>
                                         <th></th>
                                         <th></th>
+                                        <th>修改狀態</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -278,6 +279,17 @@ include "logincheck.php";
                                 <input type="hidden" name="method" value="judge">
                                 <td><input class="btn btn-warning" type="submit" name="agree" value="同意交易" style="border-radius: 5px;"></td>
                                 <td><input class="btn btn-warning" type="submit" name="no" value="拒絕交易" style="border-radius: 5px;"></td>
+                                <?
+                                    if($row[3]=="借"){
+                                ?>
+                                        <td><input class="btn btn-warning" type="submit" name="no" value="他已還書" style="border-radius: 5px;"></td>
+                                <?
+                                    }else{
+                                ?>
+                                        <td>買書無法修改</td>
+                                <?
+                                    }
+                                ?>
                                 </form>
                                 <?
                                 }
