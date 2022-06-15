@@ -182,7 +182,7 @@ $result=$web->record();
                     <div class="row" style="text-align:center">
                                 <?php
                                 $link = mysqli_connect("localhost","root","12345678","user");
-                                $sqlt = "select b.book_name, u.user_name, u.user_t, b.buy_b, b.s_price, t.t_date, b.buy_sit,t.trade_id, b.book_id from trade as t, user as u, book as b where t.buy_id = '$record[0]' and b.book_id = t.book_id and u.user_id = b.owner_id";
+                                $sqlt = "select b.book_name, u.user_name, u.user_t, b.buy_b, b.s_price, t.t_date, t.t_status_2,t.trade_id, b.book_id from trade as t, user as u, book as b where t.buy_id = '$record[0]' and b.book_id = t.book_id and u.user_id = b.owner_id and t.t_status_2 != 3";
                                 $result = mysqli_query($link, $sqlt);
                                 $record = mysqli_num_rows($result);
                                 $row = mysqli_num_rows($result);
@@ -231,10 +231,15 @@ $result=$web->record();
                                             $row[6]="持有者未確認";
                                         }
                                         else if($row[6]==1){
-                                            $row[6]="持有者同意，請等候電話";
+                                            $row[6]="持有者拒絕你的訂單或選擇和其他人交易";
                                         }
                                         else{
-                                            $row[6]="持有者拒絕你的訂單";
+                                            if($row[3]=="借"){
+                                                $row[6]="持有者已同意，請等候電話，未來還書後紀錄會由持有者刪除";
+                                            }
+                                            else{
+                                                $row[6]="持有者已同意，請等候電話";   
+                                            }
                                         }
                                         echo "<tr>
                                         <td>$row[0]</td>
@@ -246,24 +251,25 @@ $result=$web->record();
                                         <td>$row[6]</td>
                                         ";
                                 ?>
-                                <input type="hidden" name="delid" value="<? echo $tid;?>">
+                                <input type="hidden" name="tid" value="<? echo $tid;?>">
                                 <input type="hidden" name="bkid" value="<? echo $bkid;?>">
                                 <?
-                                    if($status = 0){
+                                    if($status == 0){
                                 ?>
                                 <input type="hidden" name="method" value="delete">
                                 <td><input class="btn btn-warning" type="submit" value="取消訂單" style="border-radius: 5px;"></td>
                                 <?
                                     }
-                                    else if($status = 2){
+                                    else if($status == 1){
                                 ?>
                                 <input type="hidden" name="method" value="delete">
                                 <td><input class="btn btn-warning" type="submit" value="取消紀錄" style="border-radius: 5px;"></td>
                                 <?
                                     }
-                                    else if($status = 1){
+                                    else if($status == 2){
                                 ?>
                                         <input type="hidden" name="method" value="rate">
+                                        <input type="hidden" name="site" value="order">
                                         <td><input class="btn btn-warning" type="submit" value="填寫評價" style="border-radius: 5px;"></td>
                                 <?
                                     }

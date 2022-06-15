@@ -208,7 +208,7 @@ include "logincheck.php";
             </div><br>
             <div>
                 <div style="width: 100%; background-color:#e6e6e6;padding-left:40px;padding-right:40px; margin-bottom: 40px;padding-bottom:40px">
-                    <a href='index.php' class='btn btn-primary btn-luxe-primary' style="margin-top: 20px;">返回上一頁<i class='ti-angle-right'></i></a>
+                    <a href='index.php' class='btn btn-primary btn-luxe-primary' style="margin-top: 20px; margin-left: 100px;">返回上一頁<i class='ti-angle-right'></i></a>
                     <div class="row">
                         <div class="col-md-12" style="height: 50px;">
                             <div class="section-title text-center" style="padding-top:10px;">
@@ -220,7 +220,7 @@ include "logincheck.php";
                     <div class="row" style="text-align:center">
                                 <?php
                                 $link = mysqli_connect("localhost","root","12345678","user");
-                                $sqlt = "select b.book_name, u.user_name, u.user_t, b.buy_b, b.s_price, t.t_date, t.trade_id, b.book_id from trade as t, user as u, book as b where b.book_id = t.book_id and b.owner_id = '$record[0]' and  u.user_id = t.buy_id and t.t_status != 2";
+                                $sqlt = "select b.book_name, u.user_name, u.user_t, b.buy_b, b.s_price, t.t_date, t.trade_id, b.book_id, t.t_status_1, u.user_id, b.buy_sit from trade as t, user as u, book as b where b.book_id = t.book_id and b.owner_id = '$record[0]' and  u.user_id = t.buy_id and t.t_status_1 != 3";
                                 $result = mysqli_query($link, $sqlt);
                                 $record = mysqli_num_rows($result);
                                 $row = mysqli_num_rows($result);
@@ -244,8 +244,7 @@ include "logincheck.php";
                                         <th>借書/賣書</th>
                                         <th>價格</th>
                                         <th>訂單時間</th>
-                                        <th></th>
-                                        <th></th>
+                                        <th>交易與評價</th>
                                         <th>修改狀態</th>
                                     </tr>
                                 </thead>
@@ -255,8 +254,6 @@ include "logincheck.php";
                                 ?>
                                         <form action="dblink2.php" method="post">
                                 <?
-                                        $tid = $row[6];
-                                        $bkid = $row[7];
                                         if($row[3]=="b"){
                                             $row[3]="買";
                                             $row[4]="NT$$row[4]";
@@ -272,27 +269,52 @@ include "logincheck.php";
                                         <td>$row[3]</td>
                                         <td>$row[4]</td>
                                         <td>$row[5]</td>
+                                        <input type=hidden name=buy_brw value=$row[3]>
+                                        <input type=hidden name=buyer_id value=$row[9]>
+                                        <input type=hidden name=bkid value=$row[7]>
+                                        <input type=hidden name=tid value=$row[6]>
                                         ";
                                 ?>
-                                <input type="hidden" name="bkid" value="<? echo $bkid;?>">
-                                <input type="hidden" name="tid" value="<? echo $tid;?>">
-                                <input type="hidden" name="method" value="judge">
-                                <td><input class="btn btn-warning" type="submit" name="agree" value="同意交易" style="border-radius: 5px;"></td>
-                                <td><input class="btn btn-warning" type="submit" name="no" value="拒絕交易" style="border-radius: 5px;"></td>
                                 <?
-                                    if($row[3]=="借"){
+                                    //交易與評價
+                                    if($row[8]== 0){
                                 ?>
-                                        <td><input class="btn btn-warning" type="submit" name="no" value="他已還書" style="border-radius: 5px;"></td>
+                                        <input type="hidden" name="method" value="judge">
+                                        <td><input class="btn btn-warning" type="submit" name="agree" value="同意交易" style="border-radius: 5px;">
+                                        <input class="btn btn-warning" type="submit" name="no" value="拒絕交易" style="border-radius: 5px;"></td>
                                 <?
-                                    }else{
+                                     }elseif($row[8] == 2){
                                 ?>
-                                        <td>買書無法修改</td>
+                                        <input type="hidden" name="site" value="manage">    
+                                        <td><input class="btn btn-warning" type="submit" name="rate" value="點此填寫評價" style="border-radius: 5px;"></td>
+                                <?
+                                        }
+                                      else{
+                                ?>
+                                            <td>已填寫評論</td>
+                                <?
+                                        }
+                                    //修改狀態
+                                    if($row[3] == '借' and $row[8] > 1){
+                                        if($row[10] == 1){
+                                ?>
+                                            <td><input class="btn btn-warning" type="submit" name="back" value="已經還書" style="border-radius: 5px;"></td>
+                                <?
+                                        }else{
+                                ?>
+                                            <td>已經還書</td>
+                                <?
+                                        }
+                                    }
+                                    else{
+                                ?>
+                                            <td>已經賣出</td>
                                 <?
                                     }
                                 ?>
-                                </form>
+                                    </form>
                                 <?
-                                }
+                                    }
                                 }
                                 else{
                                     echo "<div class='section-title text-center' style='padding-top:20px'>

@@ -40,8 +40,14 @@
             echo "<script> {window.alert('下單成功，請隨時注意訂單列表中的狀態欄!');location.href='books.php'} </script>";
         }
     }
+    else if($method=="takedown"){//下架
+        @$bkid = $_POST["bkid"];
+        @$sqlb="delete from book where book_id = $bkid";
+        if(mysqli_query($link,$sqlb)){
+            echo "<script> {window.alert('下架成功');location.href='my.php'} </script>";
+        }
+        else{
+            echo "刪除失敗";
+        }
+    }
 ?>
-
-<body>
-
-</body>

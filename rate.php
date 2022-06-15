@@ -2,31 +2,10 @@
 require "connect.php";
 $web=new web;
 session_start();
-if(isset($_GET["status"]) && $_GET["status"]=="logout"){
-    session_destroy();
-}
-else{
-    if(isset($_SESSION["user_id"])){
-        $type=$_SESSION["user_id"];
-    }     
-}
-if(!isset($_SESSION["type"])){
-    echo "<script> {window.alert('請先登入');location.href='login.php'} </script>";
-}
-else{
-    if($_SESSION["type"]!="user"){
-        echo "<script> {window.alert('請先登入系統');location.href='index.php'} </script>";
-    }
-}
-@$_SESSION['status'] = $_GET['method'];
-@$status = $_GET['method'];
-
-if($status=='b'){
-    $status = "賣";
-}
-else{
-    $status = "借出";
-}
+include "logincheck.php";
+@$site = $_SESSION["site"];
+@$tid = $_SESSION["tid"];
+@$bkid = $_SESSION["bkid"];
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -104,7 +83,23 @@ else{
     <!--[if lt IE 9]>
 	<script src="js/respond.min.js"></script>
 	<![endif]-->
-
+    <style type="text/css">
+        form{
+            display: flex;
+            justify-content: center; 
+            align-items: center;
+            width: 30%;
+        }
+        .row{
+            display: flex;
+            justify-content: center; 
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        textarea{
+            resize: none;
+        }
+    </style>
 </head>
 
 <body>
@@ -135,8 +130,7 @@ else{
                     <div class="row">
                         <div class="col-md-12 col-md-offset-0 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-center fh5co-table">
                             <div class="fh5co-intro fh5co-table-cell">
-                                <h1 class="text-center">發布區(<? echo $status ?>)</h1>
-
+                                <h1 class="text-center">評價對方吧!<? echo $bkid ?></h1>
                             </div>
                         </div>
                     </div>
@@ -145,74 +139,43 @@ else{
 
             <div class="fh5co-bg-color" style="background-color:white">
                 <div class="container">
-                    <a href='books.php' class='btn btn-primary btn-luxe-primary' style="margin-top: 20px;">回上一頁<i class='ti-angle-right'></i></a>
+                    <a href='<? echo $site ?>.php' class='btn btn-primary btn-luxe-primary' style="margin-top: 20px;">回上一頁<i class='ti-angle-right'></i></a>
                     <div class="row">
-                        <div class="col-md-12">
-                            <div class="section-title text-center">
-                                <h2>填寫書籍資料(所有皆為必填)</h2>
-                            </div>
+                        <div class="col-md-12" style="text-align: center;">
+                                <h2>填寫評價</h2>
                         </div>
                     </div>
-
-
-                    <form action="dblink.php" method="post">
-                        <input type=hidden name="method" value="insert">
-                        <div class="row">
-                            <div class='feature-full-2col'>
-                                <div class='f-hotel' style='border:1px black solid'>
-                                    <div class='desc'>
+                    <div class="row">
+                        <form action="dblink2.php" method="post">
+                                <input type=hidden name="method" value="insert_rate">
+                                    <div style='border:1px black solid; padding: 20px;'>
                                         <label>
-                                            書籍名稱：<input type='text' name='book_name' value='<?php echo @$book_name?>' style='height:30px;color:black' required>
-                                        </label>
-                                        <br>
-                                        <label>
-                                            作者名稱：<input type='text' name='book_athor' value='<?php echo @$book_athor?>' style='height:30px;color:black' required>
-                                        </label>
-                                        <br>
-                                        <label>
-                                            出版社名稱：<input type='text' name='book_pub' value='<?php echo @$book_pub?>' style='height:30px;color:black' required>
-                                        </label>
-										<br>
-                                        <label>
-                                            類型(其他類型請選其他)：
-                                            <div class="input-group mb-3">
-                                                <select name="book_cat" class="form-select" id="inputGroupSelect02" required>
-                                                    <option selected>請選擇...</option>
-                                                    <?
-                                                    $link=mysqli_connect("localhost","root","12345678","user");
-                                                    $sqlc = "select cat_name from cat";
-                                                    $rsc = mysqli_query($link,$sqlc);
-                                                    while($record = mysqli_fetch_row($rsc)){
-                                                    ?>
-                                                        <option value="<? echo $record[0];?>"><? echo $record[0];?></option>
-                                                    <?
-                                                        }
-                                                    ?>
-                                                </select>
+                                            你對他的評價分數(1到5分):
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="score" id="inlineRadio1" value="1" required>
+                                                <label class="form-check-label" for="inlineRadio1" style="margin-right: 10px;">1</label>
+                                                <input class="form-check-input" type="radio" name="score" id="inlineRadio2" value="2" required>
+                                                <label class="form-check-label" for="inlineRadio2" style="margin-right: 10px;">2</label>
+                                                <input class="form-check-input" type="radio" name="score" id="inlineRadio3" value="3" required>
+                                                <label class="form-check-label" for="inlineRadio3" style="margin-right: 10px;">3</label>
+                                                <input class="form-check-input" type="radio" name="score" id="inlineRadio4" value="4" required>
+                                                <label class="form-check-label" for="inlineRadio4" style="margin-right: 10px;">4</label>
+                                                <input class="form-check-input" type="radio" name="score" id="inlineRadio5" value="5" required>
+                                                <label class="form-check-label" for="inlineRadio5">5</label>
                                             </div>
                                         </label>
-										<br>
-                                        <label>
-                                            圖片：<input type="file" name='book_pic' value='<?php echo $book_pic ?>' accept="image/jpeg,image/jpg,image/png" required>
-                                        </label>
-										<br>
-                                        <?
-                                            if($status=="賣"){
-                                        ?>
-                                                <label>
-                                                    價格: $ <input type="text" name="s_price" value="<?php echo @$s_price ?>" style='height:30px;color:black; width: 100px;'required> 
-                                                </label>
-                                        <?
-                                            }
-                                        ?>
                                         <br>
-                                        <p><button class='btn btn-primary btn-luxe-primary'>新增<i class='ti-angle-right'></i></button></p>
+                                        <label>
+                                            寫下你對他的評價吧(選填，最多50字):
+                                        </label>
+                                        <span>
+                                            <textarea name="rate_t" rows="3" cols="20" resize: none></textarea>
+                                        </span>                                             
+										<br>
+                                        <p style="float: right;"><button class='btn btn-primary btn-luxe-primary'>送出<i class='ti-angle-right'></i></button></p>
                                     </div>
-                                </div>
-                            </div>
-                      </div>
-                    </form>
-
+                        </form>
+                    </div>
                 </div>
             </div>
 

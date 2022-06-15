@@ -251,7 +251,7 @@ include "logincheck.php";
                                 <?
                                     while($row=mysqli_fetch_row($result)){
                                 ?>
-                                        <form action="dblink2.php" method="post">
+                                        <form action="dblink.php" method="post">
                                 <?
                                          $id = $row[6];
                                         if($row[3]=="b"){
@@ -280,7 +280,7 @@ include "logincheck.php";
                                 }
                                 else{
                                     echo "<div class='section-title text-center' style='padding-top:20px'>
-                                    <h1 style='color:red'>你沒有訂單</h1>
+                                    <h1 style='color:red'>你沒有上架書籍</h1>
                                     </div>";
                                 }
                                 ?>
