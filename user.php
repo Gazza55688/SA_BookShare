@@ -2,19 +2,9 @@
 require "connect.php";
 $web=new web;
 session_start();
-include "logincheck.php";
-if(isset($_SESSION["user_id"])){
-    $type=$_SESSION["user_id"];
-} 
-if(isset($_GET["delid"])){
-    if($web->announceDelete($_GET["delid"])){
-        echo "<script> {window.alert('刪除成功');location.href='announce.php'} </script>";
-    }
-    else{
-        echo "<script> {window.alert('刪除失敗');location.href='announce.php'} </script>";
-    }
-}
-$id = $_SESSION['user_id'];
+//include "logincheck.php";
+
+//$id = $_SESSION['user_id'];
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -89,11 +79,13 @@ $id = $_SESSION['user_id'];
 	<!--[if lt IE 9]>
 	<script src="js/respond.min.js"></script>
 	<![endif]-->
-
+    <style type="text/css">
+        .col-6{
+            border-width:1px;border-style:solid;border-color:#000;   
+        }
+    </style>
 </head>
 <body>
-	<div id="fh5co-wrapper">
-	<div id="fh5co-page">
 	<div id="fh5co-header">
 		<header id="fh5co-header-section">
 			<div class="container">
@@ -112,115 +104,39 @@ $id = $_SESSION['user_id'];
 	</div>
 	<!-- end:fh5co-header -->
 	<div class="fh5co-parallax" style="background-image: url(images/147958.jpg);" data-stellar-background-ratio="0.5">
-		<div class="overlay"></div>
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12 col-md-offset-0 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-center fh5co-table">
 					<div class="fh5co-intro fh5co-table-cell">
-						<h1 class="text-center">使用者資訊</h1>
+						<h1 class="text-center">使用者評價</h1>
 						
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-
-	<div id="featured-hotel" class="fh5co-bg-color" style="background-color:white">
-		<div class="container">
-			<a href='edit.php' class='btn btn-primary btn-luxe-primary'>修改資訊<i class='ti-angle-right'></i></a>
-			<div class="row">
-				<div class="col-md-12">
-					<div class="section-title text-center">
-					</div>
-				</div>
-			</div>
-			<div class="row">
-                <div class='feature-full-2col' style="display: flex; justify-content: center; align-items: center;">
-                    <div class='f-hotel' style='border:1px black solid'>
-                        <div class='image' style='background-image: url(images/hotel_feture_2.jpg); width:100px'></div>
-                            <div class='desc'>
-                                <table>
-                                    <?php
-                                        $link=mysqli_connect("localhost","root","12345678","user");
-                                        $sql="select * from user where user_id=$id";
-                                        $rs=mysqli_query($link,$sql);
-                                        while($record=mysqli_fetch_row($rs)){
-                                            echo "<tr><td>姓名: </td><td>$record[1]</td></tr><tr><td>學號: </td><td>$record[0]</td></tr>
-                                            <tr></tr><tr><td>電話: </td><td>$record[3]</td></tr>";
-                                        }
-                                        mysqli_close($link);
-                                    ?>
-                                </table>
+    <div>
+                <div style="width: 100%; background-color:#e6e6e6;padding-left:40px;padding-right:40px; margin-bottom: 40px;padding-bottom:40px">
+                    <a href='index.php' class='btn btn-primary btn-luxe-primary' style="margin-top: 20px;">返回上一頁<i class='ti-angle-right'></i></a>
+                    <div class="row">
+                        <div class="col-md-12" style="height: 50px;">
+                            <div class="section-title text-center" style="padding-top:10px;">
+                                <h2>評價一覽</h2>
                             </div>
+                        </div>
+                    </div>
+                    <div class="row g-0" style="margin-left: 100px;margin-right:100px;">
+                        <div class="col-6 col-md-4">.col-sm-6 .col-md-4</div>
+                        <div class="col-6 col-md-4">.col-sm-6 .col-md-4</div>
+                        <div class="col-6 col-md-4">.col-6 .col-md-4</div>
+                        <div class="col-6 col-md-12">
+                            55688
+                        </div>
                     </div>
                 </div>
-			<div class="row">
-			<?php
-                $re=$web->announce();
-                $i=0;
-                @$count=mysqli_num_rows($re);
-                while(@$row=mysqli_fetch_row($re)){
-                    if($i%2==0){
-                        echo "<div class='feature-full-2col'>
-					<div class='f-hotel' style='border:1px black solid'>
-						<div class='image' style='background-image: url(images/hotel_feature_2.jpeg); width:300px'>
-							
-						</div>
-						<div class='desc'>
-							<h3>$row[1]</h3>
-							<p>$row[2]</p>
-                            <p>優惠期間:<br>".$row[3]."~".$row[4]."</p>
-							<span><a href='new1.php' class='btn btn-primary btn-luxe-primary'>修改<i class='ti-angle-right'></i></a></span>
-						</div>
-					</div>";
-                    }
-                    if($i%2!=0){
-                        echo "<div class='f-hotel' style='border:1px black solid'>
-						<div class='image' style='background-image: url(images/hotel_feature_2.jpeg);width:300px'>
-							
-						</div>
-						<div class='desc'>
-							<h3>$row[1]</h3>
-							<p>$row[2]</p>
-                            <p>優惠期間:<br>".$row[3]."~".$row[4]."</p>
-							<span><a href='announceupdate.php?updateid=$row[0]' class='btn btn-primary btn-luxe-primary'>修改<i class='ti-angle-right'></i></a></span><span><a href='announce.php?delid=$row[0]' class='btn btn-primary btn-luxe-primary' onclick=\"return confirm('確定刪除?')\">刪除<i class='ti-angle-right'></i></a></span>
-						</div>
-					</div>";
-                    }
-                    if($i%2!=0 and $i%2<2){
-                        echo "</div>";
-                    }
-                    if($i%2==0 and $i%2>2){
-                        echo "<div class='f-hotel' style='border:1px black solid'>
-						<div class='image' style='background-image: url(images/hotel_feature_2.jpeg);width:300px'>
-							
-						</div>
-						<div class='desc'>
-							<h3>$row[1]</h3>
-							<p>$row[2]</p><br>
-                            <p>優惠期間:<br>".$row[3]."~".$row[4]."</p>
-							<span><a href='announce.php?updateid=$row[0]' class='btn btn-primary btn-luxe-primary'>修改<i class='ti-angle-right'></i></a></span><span><a href='announceupdate.php?delid=$row[0]' class='btn btn-primary btn-luxe-primary' onclick=\"return confirm('確定刪除?')\">刪除<i class='ti-angle-right'></i></a></span>
-						</div>
-					</div></div>";
-                    }
-                    
-                    if($i+1==$count){
-                        echo "</div>";
-                    }
-                    $i++;
-                }
-                ?>
-				
-				
-			</div>
-
-		</div>
-	</div>
-	</div>
+            </div>
 	<!-- END fh5co-page -->
 
-	</div>
-	<!-- END fh5co-wrapper -->
 	
 	<!-- Javascripts -->
 	<script src="js/jquery-2.1.4.min.js"></script>
