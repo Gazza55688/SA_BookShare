@@ -220,7 +220,16 @@ include "logincheck.php";
                     <div class="row" style="text-align:center">
                                 <?php
                                 $link = mysqli_connect("localhost","root","12345678","user");
-                                $sqlt = "select b.book_name, u.user_name, u.user_t, b.buy_b, b.s_price, t.t_date, t.trade_id, b.book_id, t.t_status_1, u.user_id, b.buy_sit from trade as t, user as u, book as b where b.book_id = t.book_id and b.owner_id = '$record[0]' and  u.user_id = t.buy_id and t.t_status_1 != 3";
+                                $sqlj="select t.t_status_1, b.buy_sit, t.trade_id from trade as t, book as b where b.book_id = t.book_id and b.owner_id = '$record[0]'";
+                                $result_j = mysqli_query($link, $sqlj);
+                                while($row=mysqli_fetch_row($result_j)){
+                                    if($row[0]==3 && $row[1]==0){
+                                        $sqlc="update trade set t_status_1=4 where trade_id = $row[2]";
+                                        mysqli_query($link, $sqlc);
+                                    }
+                                }
+                                
+                                $sqlt = "select b.book_name, u.user_name, u.user_t, b.buy_b, b.s_price, t.t_date, t.trade_id, b.book_id, t.t_status_1, u.user_id, b.buy_sit from trade as t, user as u, book as b where b.book_id = t.book_id and b.owner_id = '$record[0]' and  u.user_id = t.buy_id and t.t_status_1 != 4";
                                 $result = mysqli_query($link, $sqlt);
                                 $record = mysqli_num_rows($result);
                                 $row = mysqli_num_rows($result);
@@ -274,8 +283,6 @@ include "logincheck.php";
                                         <input type=hidden name=bkid value=$row[7]>
                                         <input type=hidden name=tid value=$row[6]>
                                         ";
-                                ?>
-                                <?
                                     //交易與評價
                                     if($row[8]== 0){
                                 ?>

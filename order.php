@@ -182,7 +182,15 @@ $result=$web->record();
                     <div class="row" style="text-align:center">
                                 <?php
                                 $link = mysqli_connect("localhost","root","12345678","user");
-                                $sqlt = "select b.book_name, u.user_name, u.user_t, b.buy_b, b.s_price, t.t_date, t.t_status_2,t.trade_id, b.book_id from trade as t, user as u, book as b where t.buy_id = '$record[0]' and b.book_id = t.book_id and u.user_id = b.owner_id and t.t_status_2 != 3";
+                                $sqlj="select t.t_status_2, b.buy_sit, t.trade_id from trade as t, book as b where b.book_id = t.book_id and t.buy_id = '$record[0]'";
+                                $result_j = mysqli_query($link, $sqlj);
+                                while($row=mysqli_fetch_row($result_j)){
+                                    if($row[0]==3 && $row[1]==0){
+                                        $sqlc="update trade set t_status_2=4 where trade_id = $row[2]";
+                                        mysqli_query($link, $sqlc);
+                                    }
+                                }
+                                $sqlt = "select b.book_name, u.user_name, u.user_t, b.buy_b, b.s_price, t.t_date, t.t_status_2,t.trade_id, b.book_id from trade as t, user as u, book as b where t.buy_id = '$record[0]' and b.book_id = t.book_id and u.user_id = b.owner_id and t.t_status_2 != 4";
                                 $result = mysqli_query($link, $sqlt);
                                 $record = mysqli_num_rows($result);
                                 $row = mysqli_num_rows($result);
@@ -235,10 +243,10 @@ $result=$web->record();
                                         }
                                         else{
                                             if($row[3]=="借"){
-                                                $row[6]="持有者已同意，請等候電話，未來還書後紀錄會由持有者刪除";
+                                                $row[6]="持有者同意，請等候電話，若還書後請盡速填寫評價";
                                             }
                                             else{
-                                                $row[6]="持有者已同意，請等候電話";   
+                                                $row[6]="持有者同意，請等候電話, 若交易完成請盡速填寫評價";
                                             }
                                         }
                                         echo "<tr>
@@ -249,32 +257,32 @@ $result=$web->record();
                                         <td>$row[4]</td>
                                         <td>$row[5]</td>
                                         <td>$row[6]</td>
+                                        <input type=hidden name=bkid value=$row[8]>
+                                        <input type=hidden name=tid value=$row[7]>
                                         ";
-                                ?>
-                                <input type="hidden" name="tid" value="<? echo $tid;?>">
-                                <input type="hidden" name="bkid" value="<? echo $bkid;?>">
-                                <?
                                     if($status == 0){
                                 ?>
-                                <input type="hidden" name="method" value="delete">
-                                <td><input class="btn btn-warning" type="submit" value="取消訂單" style="border-radius: 5px;"></td>
+                                        <input type="hidden" name="method" value="delete">
+                                        <td><input class="btn btn-warning" type="submit" value="取消訂單" style="border-radius: 5px;"></td>
                                 <?
                                     }
                                     else if($status == 1){
                                 ?>
-                                <input type="hidden" name="method" value="delete">
-                                <td><input class="btn btn-warning" type="submit" value="取消紀錄" style="border-radius: 5px;"></td>
+                                        <input type="hidden" name="method" value="delete">
+                                        <td><input class="btn btn-warning" type="submit" value="取消紀錄" style="border-radius: 5px;"></td>
                                 <?
                                     }
                                     else if($status == 2){
                                 ?>
-                                        <input type="hidden" name="method" value="rate">
-                                        <input type="hidden" name="site" value="order">
-                                        <td><input class="btn btn-warning" type="submit" value="填寫評價" style="border-radius: 5px;"></td>
+                                        <input type="hidden" name="site" value="order">    
+                                        <td><input class="btn btn-warning" type="submit" name="rate" value="點此填寫評價" style="border-radius: 5px;"></td>
                                 <?
                                     }
-                                    else{ echo "<td></td>";}
-                                  }
+                                ?>
+                                    </form>
+                                <?
+                                    }
+                                
                                 }
                                 else{
                                     echo "<div class='section-title text-center' style='padding-top:20px'>
@@ -282,7 +290,6 @@ $result=$web->record();
                                     </div>";
                                 }
                                 ?>
-                                </form>
                             </tbody>
                         </table>
                         <footer id="footer" style=" padding: 5px;">

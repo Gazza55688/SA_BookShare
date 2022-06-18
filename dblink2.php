@@ -13,6 +13,7 @@
     @$rs1 = mysqli_query($link, $sqln);
     @$record = mysqli_fetch_row($rs1);
     @$name=$record[0];
+    //t_status=0: 尚未同意or拒絕 t_status=1: 拒絕 t_status=2: 同意(未填評價) t_status=3: 同意(已填評價)
     if($method=="judge"){//同意or拒絕
             @$bkid = $_POST["bkid"];
             @$yes = $_POST["agree"];
@@ -76,6 +77,28 @@
     else if($method=="insert_rate"){//新增評價
         $score = $_POST["score"];
         $text = $_POST["rate_t"];
-        
+        $uid = $_POST["uid"];
+        $bkid = $_POST["bkid"];
+        $site = $_POST["site"];
+        $tid = $_POST["tid"];
+        @$sqlb="insert into rate (user_id, book_id, trade_id, rate, rate_w) values ('$uid', '$bkid', '$tid','$score', '$text')";
+        $sqlj="select buy_id from trade where trade_id = $tid";
+        $result_j = mysqli_query($link, $sqlj);
+        while($row=mysqli_fetch_row($result_j)){
+            if($row[0]==$uid){
+                @$sqlc="update trade set t_status_2 = 3 where trade_id = $tid";
+                mysqli_query($link,$sqlc);
+            }
+            else{
+                @$sqlc="update trade set t_status_1 = 3 where trade_id = $tid";
+                mysqli_query($link,$sqlc);
+            }
+        }
+        if(mysqli_query($link,$sqlb)&&mysqli_query($link,$sqlc)){
+            echo "<script> {window.alert('評價完成!');location.href='$site.php'} </script>";
+        }
+        else{
+            echo "評價失敗";
+        }
     }
 ?>

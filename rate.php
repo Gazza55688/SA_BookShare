@@ -130,7 +130,7 @@ include "logincheck.php";
                     <div class="row">
                         <div class="col-md-12 col-md-offset-0 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-center fh5co-table">
                             <div class="fh5co-intro fh5co-table-cell">
-                                <h1 class="text-center">評價對方吧!<? echo $bkid ?></h1>
+                                <h1 class="text-center">評價對方吧!</h1>
                             </div>
                         </div>
                     </div>
@@ -142,15 +142,64 @@ include "logincheck.php";
                     <a href='<? echo $site ?>.php' class='btn btn-primary btn-luxe-primary' style="margin-top: 20px;">回上一頁<i class='ti-angle-right'></i></a>
                     <div class="row">
                         <div class="col-md-12" style="text-align: center;">
-                                <h2>填寫評價</h2>
+                                <h2>訂單資訊</h2>
                         </div>
+                    </div>
+                    <div style="display: flex;justify-content: center;align-items: center;">
+                            <?
+                                @$link = mysqli_connect("localhost", "root", "12345678", "user");
+                                @$sql="select b.book_name, u.user_name, b.buy_b, t.buy_id from trade as t, book as b, user as u where t.trade_id = $tid and b.book_id = $bkid and u.user_id = t.buy_id";
+                                @$sql2="select u.user_name, t.t_date, b.s_price from trade as t, book as b, user as u where t.trade_id = $tid and b.book_id = $bkid and u.user_id = b.owner_id";
+                                @$result = mysqli_query($link,$sql);
+                                @$result2 = mysqli_query($link,$sql2);
+                                while($row=mysqli_fetch_row($result)){
+                                    $buyer = $row[3];
+                                    echo "<div style=text-align: right;><p>書名: $row[0]</p>
+                                    <p>訂單申請人: $row[1]";
+                                    if($row[2]=="b"){
+                                        $row[2] = "買書";
+                                        $buy_b = $row[2];
+                                        echo "(買書)</p>";
+                                    }
+                                    else{
+                                        $row[2] = "借書";
+                                        $buy_b = $row[2];
+                                        echo "(借書)</p>";
+                                    }
+                                }
+                                while($row=mysqli_fetch_row($result2)){
+                                    echo "<p>書持有者: $row[0]</p>
+                                    <p>訂單日期: $row[1]</p>";
+                                    if($row[2]!=0){
+                                        echo"<p>售價: $$row[2]</p></div>";
+                                    }
+                                    else{
+                                        echo"</div>";
+                                    }
+                                }
+                            ?>
                     </div>
                     <div class="row">
                         <form action="dblink2.php" method="post">
+                                <input type="hidden" name="site" value="<? echo $site;?>">
+                                <input type="hidden" name="bkid" value="<? echo $bkid;?>">
+                                <input type="hidden" name="uid" value="<? echo $record[0];?>">
+                                <input type="hidden" name="tid" value="<? echo $tid;?>">
                                 <input type=hidden name="method" value="insert_rate">
-                                    <div style='border:1px black solid; padding: 20px;'>
+                                    <div style='border:1px black solid; padding: 10px;'>
                                         <label>
-                                            你對他的評價分數(1到5分):
+                                            <?
+                                                if($buyer == $record[0]){
+                                            ?>
+                                                    填下你對書籍持有者的評價分數(1到5分，5分最高)
+                                            <?
+                                                }
+                                                else{
+                                            ?>
+                                                    填下你對<? echo $buy_b?>者的評價分數(1到5分，5分最高)
+                                            <?
+                                                }
+                                            ?>
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" name="score" id="inlineRadio1" value="1" required>
                                                 <label class="form-check-label" for="inlineRadio1" style="margin-right: 10px;">1</label>
@@ -166,7 +215,7 @@ include "logincheck.php";
                                         </label>
                                         <br>
                                         <label>
-                                            寫下你對他的評價吧(選填，最多50字):
+                                            簡述你對本次交易的評價(選填，最多50字)
                                         </label>
                                         <span>
                                             <textarea name="rate_t" rows="3" cols="20" resize: none></textarea>

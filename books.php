@@ -192,20 +192,20 @@ $link=mysqli_connect("localhost","root","12345678","user");
                         @$_SESSION['searchtxt'] = $searchtxt;
                         @$_SESSION['cat'] = $cat;
                         if(empty($searchtxt) AND $cat='請選擇類別(選填)'){
-	                       $sql1="select * from book where buy_b = 'b' and owner_id != '$record[0]' order by book_id";
-                           $sql2="select * from book where buy_b = 'br' and owner_id != '$record[0]' order by book_id";
+	                       $sql1="select * from book where buy_b = 'b' and buy_sit != 1 order by book_id";
+                           $sql2="select * from book where buy_b = 'br' and buy_sit != 1 order by book_id";
 		                }
                         elseif(empty($cat)){
-                            $sql1="select * from book where buy_b = 'b' and book_name like '%$searchtxt%' and owner_id != '$record[0]' order by book_id"; 
-                            $sql2="select * from book where buy_b = 'br' and book_name like '%$searchtxt%' and owner_id != '$record[0]' order by book_id";
+                            $sql1="select * from book where buy_b = 'b' and book_name like '%$searchtxt%' and buy_sit != 1 order by book_id"; 
+                            $sql2="select * from book where buy_b = 'br' and book_name like '%$searchtxt%' and buy_sit != 1 order by book_id";
                         }
                         elseif(empty($searchtxt)){
-                            $sql1="select * from book where buy_b = 'b' and book_cat = '$cat' and owner_id != '$record[0]' order by book_id"; 
-                            $sql2="select * from book where buy_b = 'br' and book_cat = '$cat' and owner_id != '$record[0]' order by book_id";
+                            $sql1="select * from book where buy_b = 'b' and book_cat = '$cat' and buy_sit != 1 order by book_id"; 
+                            $sql2="select * from book where buy_b = 'br' and book_cat = '$cat' and buy_sit != 1 order by book_id";
                         }
                         else{
-                            $sql1="select * from book where buy_b = 'b' and book_name like '%$searchtxt%' and book_cat = '$cat' and owner_id != '$record[0]' order by book_id"; 
-                            $sql2="select * from book where buy_b = 'br' and book_name like '%$searchtxt%' and book_cat = '$cat' and owner_id != '$record[0]' order by book_id";
+                            $sql1="select * from book where buy_b = 'b' and book_name like '%$searchtxt%' and book_cat = '$cat' and buy_sit != 1 order by book_id"; 
+                            $sql2="select * from book where buy_b = 'br' and book_name like '%$searchtxt%' and book_cat = '$cat' and buy_sit != 1 order by book_id";
                         }
                         $rs1=mysqli_query($link,$sql1);
                         //買賣分頁
@@ -233,26 +233,26 @@ $link=mysqli_connect("localhost","root","12345678","user");
                                                                 </div>";
                                                         }
                                                         else{
-                                                        while($record = mysqli_fetch_row($rs1)){
+                                                        while($record1 = mysqli_fetch_row($rs1)){
                                                     ?>
                                                     <form method="post" action="book_info.php">
                                                          <div style="float:left; width:32%; height: 30%;margin: 3px; border: 1px solid;">
-                                                        <img src="<?php echo $record[6];?>">
+                                                        <img src="<?php echo $record1[6];?>">
                                                         <hr>
                                                         <div>
-                                                            <p style="font-size: 15px; color: #000;"><?php echo $record[2];?></p>
-                                                            <input type="hidden" name="book" value="<? echo $record[2];?>">
-                                                            <p style="font-size: 15px; color: #000;">作者: <?php echo $record[3];?></p>
-                                                            <p style="font-size: 15px; color: #000;">售價: $<?php echo $record[9];?></p>
-                                                            <input type="hidden" name="own" value="<? echo $record[1];?>">
+                                                            <p style="font-size: 15px; color: #000;"><?php echo $record1[2];?></p>
+                                                            <input type="hidden" name="book" value="<? echo $record1[2];?>">
+                                                            <p style="font-size: 15px; color: #000;">作者: <?php echo $record1[3];?></p>
+                                                            <p style="font-size: 15px; color: #000;">售價: $<?php echo $record1[9];?></p>
+                                                            <input type="hidden" name="own" value="<? echo $record1[1];?>">
                                                     <?
-                                                            if($record[7] != 1){
+                                                            if($record1[1]==$record[0]){
                                                     ?>
-                                                            <input  class="btn btn-warning" type="submit" name="submit" value="買書" style="border-radius: 5px;">
+                                                                <input class="btn btn-warning" type="submit" name="submit" value="買書" style="border-radius: 5px;">
                                                     <?
                                                             }else{
                                                     ?>
-                                                            <input  class="btn btn-warning" type="submit" name="submit" value="已賣出" style="border-radius: 5px;" disabled>
+                                                            <input class="btn btn-warning" type="submit" name="submit" value="這是你的書" style="border-radius: 5px;" disabled>
                                                     <?
                                                             }
                                                     ?>
@@ -287,8 +287,6 @@ $link=mysqli_connect("localhost","root","12345678","user");
             </div>
         </div>
         <!-- END fh5co-page -->
-    </div>
-    <!-- END fh5co-wrapper -->
 
     <!-- Javascripts -->
     <script src="js/jquery-2.1.4.min.js"></script>
