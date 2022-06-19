@@ -366,7 +366,7 @@ if(isset($_POST["user_id"]) && isset($_POST["user_p"])){
 
             <!-- Login Form -->
             <form action="login.php" method="post">
-               <div id="radio"> <label><input type="radio" name="type" value="user" checked="checked"><span class="round button">使用者</span></label></div>
+                <div id="radio"> <label><input type="radio" name="type" value="user" checked="checked"><a href="index.php" style="back-ground-color: #000;"><span class="round button">回到首頁</span></a></label></div>
                 <input type="text" id="login" class="fadeIn second" name="user_id" placeholder="學號" required>
                 <input type="password" id="password" class="fadeIn third" name="user_p" placeholder="密碼" required>
                 <input type="submit" class="fadeIn fourth" value="登入">
