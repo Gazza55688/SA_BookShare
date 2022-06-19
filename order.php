@@ -292,7 +292,9 @@ $result=$web->record();
                                 ?>
                             </tbody>
                         </table>
-                        <footer id="footer" style=" padding: 5px;">
+                    </div>
+                </div>
+                 <footer id="footer" style=" padding: 5px; text-align: center;">
                          <?php
                         //分頁頁碼
                         echo '共 '.$record.' 筆-在第 '.$page.' 頁-共 '.$pages.' 頁';
@@ -305,10 +307,7 @@ $result=$web->record();
                         } 
                         echo " 頁 <a href=?page=".$pages.">末頁</a><br /><br />";
                         ?>
-                        </footer>
-                    </div>
-
-                </div>
+                </footer>
             </div>
         </div>
         <!-- END fh5co-page -->

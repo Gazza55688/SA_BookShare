@@ -42,7 +42,7 @@
     }
     else if($method=="takedown"){//下架
         @$bkid = $_POST["bkid"];
-        @$sqlb="delete from book where book_id = $bkid";
+        @$sqlb="update book set buy_sit = 1 where book_id = '$bkid'";
         if(mysqli_query($link,$sqlb)){
             echo "<script> {window.alert('下架成功');location.href='my.php'} </script>";
         }

@@ -78,10 +78,9 @@
         $score = $_POST["score"];
         $text = $_POST["rate_t"];
         $uid = $_POST["uid"];
-        $bkid = $_POST["bkid"];
         $site = $_POST["site"];
         $tid = $_POST["tid"];
-        @$sqlb="insert into rate (user_id, book_id, trade_id, rate, rate_w) values ('$uid', '$bkid', '$tid','$score', '$text')";
+        @$sqlb="insert into rate (user_id, trade_id, rate, rate_w) values ('$uid', $tid','$score', '$text')";
         $sqlj="select buy_id from trade where trade_id = $tid";
         $result_j = mysqli_query($link, $sqlj);
         while($row=mysqli_fetch_row($result_j)){

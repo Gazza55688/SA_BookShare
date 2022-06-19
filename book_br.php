@@ -250,7 +250,7 @@ $link=mysqli_connect("localhost","root","12345678","user");
                                                             <p style="font-size: 15px; color: #000;">作者: <?php echo $record2[3];?></p>
                                                             <input type="hidden" name="own" value="<? echo $record2[1];?>">
                                                     <?
-                                                            if($record2[1]==$record[0] || empty($record[0])){
+                                                            if($record2[1]!=$record[0] || empty($record[0])){
                                                                 if($record2[7] != 1){
                                                     ?>
                                                                 <input  class="btn btn-warning" type="submit" name="submit" value="借書" style="border-radius: 5px;">

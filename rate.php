@@ -148,12 +148,13 @@ include "logincheck.php";
                     <div style="display: flex;justify-content: center;align-items: center;">
                             <?
                                 @$link = mysqli_connect("localhost", "root", "12345678", "user");
-                                @$sql="select b.book_name, u.user_name, b.buy_b, t.buy_id from trade as t, book as b, user as u where t.trade_id = $tid and b.book_id = $bkid and u.user_id = t.buy_id";
+                                @$sql="select b.book_name, u.user_name, b.buy_b, t.buy_id, b.owner_id from trade as t, book as b, user as u where t.trade_id = $tid and b.book_id = $bkid and u.user_id = t.buy_id";
                                 @$sql2="select u.user_name, t.t_date, b.s_price from trade as t, book as b, user as u where t.trade_id = $tid and b.book_id = $bkid and u.user_id = b.owner_id";
                                 @$result = mysqli_query($link,$sql);
                                 @$result2 = mysqli_query($link,$sql2);
                                 while($row=mysqli_fetch_row($result)){
                                     $buyer = $row[3];
+                                    $owner = $row[4];
                                     echo "<div style=text-align: right;><p>書名: $row[0]</p>
                                     <p>訂單申請人: $row[1]";
                                     if($row[2]=="b"){

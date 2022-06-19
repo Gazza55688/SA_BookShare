@@ -206,7 +206,7 @@ $link=mysqli_connect("localhost","root","12345678","user");
                             <p>出版社: <?php echo $record1[4];?></p>
                             <p>作者：<?php echo $record1[3];?></p>
                             <p>類別：<?php echo $record1[5];?></p>
-                            <p>擁有者：<?php echo $record1[11];?></p>
+                            <p><a href='user.php?uid=<?php echo $record1[1];?>'>擁有者：<?php echo $record1[11];?></a></p>
                             <p>擁有者電話：<?php echo $record1[10];?></p>
                             <input type="hidden" name="buy_id" value="<? echo $record[0]?>">
                             <?

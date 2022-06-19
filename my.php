@@ -220,7 +220,7 @@ include "logincheck.php";
                     <div class="row" style="text-align:center">
                                 <?php
                                 $link = mysqli_connect("localhost","root","12345678","user");
-                                $sqlt = "select DISTINCT b.book_name, b.book_athor, b.book_pub, b.buy_b, b.s_price,  b.book_cat, b.book_id from book as b, user as u where b.owner_id = '$record[0]'";
+                                $sqlt = "select DISTINCT b.book_name, b.book_athor, b.book_pub, b.buy_b, b.s_price,  b.book_cat, b.book_id from book as b, user as u where b.owner_id = '$record[0]' and b.buy_sit = 0";
                                 $result = mysqli_query($link, $sqlt);
                                 $record = mysqli_num_rows($result);
                                 $row = mysqli_num_rows($result);
@@ -286,7 +286,9 @@ include "logincheck.php";
                                 ?>
                             </tbody>
                         </table>
-                        <footer id="footer" style=" padding: 5px;">
+                    </div>
+                </div>
+                <footer id="footer" style=" padding: 5px; text-align: center;">
                          <?php
                         //分頁頁碼
                         echo '共 '.$record.' 筆-在第 '.$page.' 頁-共 '.$pages.' 頁';
@@ -299,10 +301,7 @@ include "logincheck.php";
                         } 
                         echo " 頁 <a href=?page=".$pages.">末頁</a><br /><br />";
                         ?>
-                        </footer>
-                    </div>
-
-                </div>
+                </footer>
             </div>
 
         </div>
