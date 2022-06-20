@@ -110,7 +110,7 @@ include "logincheck.php";
                 $title = $row[0]."的評價";
             }
         }
-        $sqlt = "select u.user_name, r.rate_d, b.book_name, r.rate, r.rate_w, b.buy_b from rate as r, user as u, book as b, trade as t where r.trade_id = t.trade_id and t.book_id = b.book_id and (t.buy_id='$uid' or b.owner_id='$uid') and (u.user_id = t.buy_id or u.user_id = b.owner_id) and r.user_id <> '$uid' and r.user_id = u.user_id";
+        $sqlt = "select u.user_name, r.rate_d, b.book_name, r.rate, r.rate_w, b.buy_b from rate as r, user as u, book as b, trade as t where r.trade_id = t.trade_id and t.book_id = b.book_id and (t.buy_id='$uid' or b.owner_id='$uid') and (u.user_id = t.buy_id or u.user_id = b.owner_id) and r.user_id <> '$uid' and r.user_id = u.user_id order by r.rate_d DESC";
         $result = mysqli_query($link, $sqlt);
         $record = mysqli_num_rows($result);
         $row = mysqli_num_rows($result);

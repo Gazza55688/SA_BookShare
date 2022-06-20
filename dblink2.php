@@ -32,9 +32,9 @@
                 }
             }
             else{
-                @$sqlc="update trade set t_status = 1 where book_id = '$bkid' and buy_id = '$buyer_id'";
+                @$sqlc="update trade set t_status_1 = 1, t_status_2 = 1 where book_id = '$bkid' and buy_id = '$buyer_id'";
                 mysqli_query($link,$sqlc);
-                if(mysqli_query($link,$sqlb)){
+                if(mysqli_query($link,$sqlc)){
                     echo "<script> {window.alert('已拒絕此訂單');location.href='manage.php'} </script>";
                 }
                 else{
@@ -46,8 +46,6 @@
         @$trade_id = $_POST["tid"];
         @$bkid = $_POST["bkid"];
         @$sqlb="delete from trade where trade_id = $trade_id";
-        @$sqlc="update book set buy_sit = 0 where book_id = '$bkid'";
-        mysqli_query($link,$sqlc);
         if(mysqli_query($link,$sqlb)){
             echo "<script> {window.alert('取消成功');location.href='order.php'} </script>";
         }
@@ -80,7 +78,8 @@
         $uid = $_POST["uid"];
         $site = $_POST["site"];
         $tid = $_POST["tid"];
-        @$sqlb="insert into rate (user_id, trade_id, rate, rate_w) values ('$uid', $tid','$score', '$text')";
+        @$sqlb="insert into rate (user_id, trade_id, rate, rate_w) values ('$uid', '$tid','$score', '$text')";
+        echo $sqlb;
         $sqlj="select buy_id from trade where trade_id = $tid";
         $result_j = mysqli_query($link, $sqlj);
         while($row=mysqli_fetch_row($result_j)){
@@ -93,7 +92,7 @@
                 mysqli_query($link,$sqlc);
             }
         }
-        if(mysqli_query($link,$sqlb)&&mysqli_query($link,$sqlc)){
+        if(mysqli_query($link,$sqlb)){
             echo "<script> {window.alert('評價完成!');location.href='$site.php'} </script>";
         }
         else{

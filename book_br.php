@@ -1,6 +1,7 @@
 <?php
 require "connect.php";
 $web=new web;
+session_start();
 $link=mysqli_connect("localhost","root","12345678","user");
 @$searchtxt = $_GET["searchtxt"];
 @$cat = $_GET["cat"];
@@ -190,20 +191,20 @@ $link=mysqli_connect("localhost","root","12345678","user");
                     </form>
                     <?
                         if(empty($searchtxt) and $cat=='請選擇類別(選填)' or $cat==""){
-	                       $sql1="select * from book where buy_b = 'b' and buy_sit != 1 order by book_id";
-                           $sql2="select * from book where buy_b = 'br' and buy_sit != 1 order by book_id";
+	                       $sql1="select * from book where buy_b = 'b' order by book_id";
+                           $sql2="select * from book where buy_b = 'br' order by book_id";
 		                }
                         elseif($cat=='請選擇類別(選填)'){
-                            $sql1="select * from book where buy_b = 'b' and buy_sit != 1 and book_name like '%$searchtxt%' order by book_id"; 
-                            $sql2="select * from book where buy_b = 'br' and buy_sit != 1 and book_name like '%$searchtxt%' order by book_id";
+                            $sql1="select * from book where buy_b = 'b' and book_name like '%$searchtxt%' order by book_id"; 
+                            $sql2="select * from book where buy_b = 'br' and book_name like '%$searchtxt%' order by book_id";
                         }
                         elseif(empty($searchtxt)){
-                            $sql1="select * from book where buy_b = 'b' and buy_sit != 1 and book_cat = '$cat' order by book_id"; 
+                            $sql1="select * from book where buy_b = 'b' and book_cat = '$cat' order by book_id"; 
                             $sql2="select * from book where buy_b = 'br' and buy_sit != 1 and book_cat = '$cat' order by book_id";
                         }
                         else{
-                            $sql1="select * from book where buy_b = 'b' and book_name like '%$searchtxt%' and book_cat = '$cat' and owner_id != '$record[0]' order by book_id"; 
-                            $sql2="select * from book where buy_b = 'br' and book_name like '%$searchtxt%' and book_cat = '$cat' and owner_id != '$record[0]' order by book_id";
+                            $sql1="select * from book where buy_b = 'b' and book_name like '%$searchtxt%' and book_cat = '$cat' order by book_id"; 
+                            $sql2="select * from book where buy_b = 'br' and book_name like '%$searchtxt%' and book_cat = '$cat' order by book_id";
                         }
                         $rs1=mysqli_query($link,$sql1);
                         //買賣分頁
@@ -227,15 +228,27 @@ $link=mysqli_connect("localhost","root","12345678","user");
                                                     <div class="col-md-4">
                                                             <div class="container">
                                                             <div class="row text-center">
-                                                    <?php
+                                                    <?
+                                                    if(empty($searchtxt) and $cat=='請選擇類別(選填)' or $cat==""){
+                                                        echo "<div style='padding-top:20px; text-align: left;'>所有書籍 </div>";
+                                                    }
+                                                    elseif($cat=='請選擇類別(選填)'){
+                                                        echo "<div style='padding-top:20px; text-align: left;'>你搜尋關鍵字是$searchtxt</div>";
+                                                    }
+                                                    elseif(empty($searchtxt)){
+                                                        echo "<div style='padding-top:20px; text-align: left;'>你搜尋的類別為$cat</div>";
+                                                    }
+                                                    else{
+                                                        echo "<div style='padding-top:20px; text-align: left;'>你搜尋的關鍵字是$searchtxt,類別為$cat</div>";
+                                                    }
                                                     //借書輸出
-                                                        if($data_nums2==0){
-                                                                echo "<div class='section-title text-center' style='padding-top:20px'>
+                                                    if($data_nums2==0){
+                                                        echo "<div class='section-title text-center' style='padding-top:20px'>
                                                                 <h1 style='color:red'>目前無相關書籍</h1>
                                                                 </div>";
-                                                        }
-                                                        else{
-                                                            while($record2 = mysqli_fetch_row($rs2)){
+                                                    }
+                                                    else{
+                                                        while($record2 = mysqli_fetch_row($rs2)){
                                                     ?>
                                                     <form method="post" action="book_info.php">
                                                         <div style="float:left; width:32%; height: 30%;margin: 3px; border: 1px solid;">
@@ -247,19 +260,19 @@ $link=mysqli_connect("localhost","root","12345678","user");
                                                             <p style="font-size: 15px; color: #000;">作者: <?php echo $record2[3];?></p>
                                                             <input type="hidden" name="own" value="<? echo $record2[1];?>">
                                                     <?
-                                                            if($record2[1]!=$record[0] || empty($record[0])){
-                                                                if($record2[7] != 1){
+                                                            if($record2[7]==1){
                                                     ?>
-                                                                <input  class="btn btn-warning" type="submit" name="submit" value="借書" style="border-radius: 5px;">
+                                                                <input class="btn btn-warning" type="submit" name="submit" value="書已借出" style="border-radius: 5px;" disabled>
                                                     <?
-                                                                }else{
+                                                            }
+                                                            elseif($record2[1]!=$record[0] || empty($record[0])){
                                                     ?>
-                                                                <input  class="btn btn-warning" type="submit" name="submit" value="已借出" style="border-radius: 5px;" disabled>
+                                                                <input class="btn btn-warning" type="submit" name="submit" value="借書" style="border-radius: 5px;">
                                                     <?
-                                                                }
-                                                            }else{
+                                                            }
+                                                            else{
                                                     ?>
-                                                            <input class="btn btn-warning" type="submit" name="submit" value="這是你的書" style="border-radius: 5px;" disabled>
+                                                                <input class="btn btn-warning" type="submit" name="submit" value="這是你的書" style="border-radius: 5px;" disabled>
                                                     <?
                                                             }
                                                     ?>

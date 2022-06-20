@@ -12,7 +12,7 @@ if(isset($_POST["user_name"]) && isset($_POST["user_t"]) && isset($_POST["user_i
 
 <head>
     <meta charset="UTF-8">
-    <title>Document</title>
+    <title>註冊</title>
     <style>
         @import url('https://fonts.googleapis.com/css?family=Poppins');
 
@@ -137,7 +137,8 @@ if(isset($_POST["user_name"]) && isset($_POST["user_t"]) && isset($_POST["user_i
             -ms-transform: scale(0.95);
             transform: scale(0.95);
         }
-
+        
+        input[type=password],
         input[type=text] {
             background-color: #f6f6f6;
             border: none;
@@ -330,10 +331,11 @@ if(isset($_POST["user_name"]) && isset($_POST["user_t"]) && isset($_POST["user_i
 
             <!-- Login Form -->
             <form action="signup.php" method="post">
-                <input type="text" id="login" class="fadeIn second" name="user_name" placeholder="姓名" required>
+                <input type="text" id="login" class="fadeIn second" name="user_name" placeholder="名稱" required>
                 <input type="text" id="login" class="fadeIn second" name="user_t" maxlength="10" placeholder="電話" required>
-                <input type="text" id="login" class="fadeIn second" name="user_id" maxlength="9" placeholder="學號" required>
-                <input type="password" id="password" class="fadeIn third" name="user_p" placeholder="密碼" required>
+                <input type="text" id="login" class="fadeIn second" name="user_id" maxlength="9" placeholder="帳號" required>
+                <input type="password" id="password" class="fadeIn second" name="user_p" placeholder="密碼" required>
+                <p></p>
                 <input type="submit" class="fadeIn fourth" value="註冊">
             </form>
 

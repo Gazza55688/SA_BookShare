@@ -190,7 +190,7 @@ $result=$web->record();
                                         mysqli_query($link, $sqlc);
                                     }
                                 }
-                                $sqlt = "select b.book_name, u.user_name, u.user_t, b.buy_b, b.s_price, t.t_date, t.t_status_2,t.trade_id, b.book_id from trade as t, user as u, book as b where t.buy_id = '$record[0]' and b.book_id = t.book_id and u.user_id = b.owner_id and t.t_status_2 != 4";
+                                $sqlt = "select b.book_name, u.user_name, u.user_t, b.buy_b, b.s_price, t.t_date, t.t_status_2,t.trade_id, b.book_id, u.user_id from trade as t, user as u, book as b where t.buy_id = '$record[0]' and b.book_id = t.book_id and u.user_id = b.owner_id and t.t_status_2 != 4 and t.t_status_2 != 3";
                                 $result = mysqli_query($link, $sqlt);
                                 $record = mysqli_num_rows($result);
                                 $row = mysqli_num_rows($result);
@@ -210,7 +210,7 @@ $result=$web->record();
                                     <tr>
                                         <th>書名</th>
                                         <th>書籍持有者名稱</th>
-                                        <th>書籍持有者手機</th>
+                                        <th>書籍持有者電話</th>
                                         <th>借書/賣書</th>
                                         <th>價格</th>
                                         <th>訂單時間</th>
@@ -251,7 +251,7 @@ $result=$web->record();
                                         }
                                         echo "<tr>
                                         <td>$row[0]</td>
-                                        <td>$row[1]</td>
+                                        <td><a href=user.php?uid=$row[9]>$row[1]</a></td>
                                         <td>$row[2]</td>
                                         <td>$row[3]</td>
                                         <td>$row[4]</td>
@@ -278,9 +278,12 @@ $result=$web->record();
                                         <td><input class="btn btn-warning" type="submit" name="rate" value="點此填寫評價" style="border-radius: 5px;"></td>
                                 <?
                                     }
+                                    else{
                                 ?>
+                                        <td></td>
                                     </form>
                                 <?
+                                    }
                                     }
                                 
                                 }

@@ -222,9 +222,24 @@ $link=mysqli_connect("localhost","root","12345678","user");
                                         <a href='book_br.php?cat=<? echo $cat?>&searchtxt=<? echo $searchtxt?>' class='btn btn-primary btn-luxe-primary' style="margin-top: 20px;">我想借書(<? echo $data_nums2?>)<i class='ti-angle-right'></i></a>
                                 </div>
                                         <div class="tab-content" data-tab-content="tab1">
-                                            <div class="container">
-                                            <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+                                             <div class="container">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                            <div class="container">
+                                                            <div class="row text-center">
                                                     <?php
+                                                    if(empty($searchtxt) and $cat=='請選擇類別(選填)' or $cat==""){
+                                                        echo "<div style='padding-top:20px; text-align: left;'>所有書籍</div>";
+                                                    }
+                                                    elseif($cat=='請選擇類別(選填)'){
+                                                        echo "<div style='padding-top:20px; text-align: left;'>你搜尋關鍵字是$searchtxt</div>";
+                                                    }
+                                                    elseif(empty($searchtxt)){
+                                                        echo "<div style='padding-top:20px; text-align: left;'>你搜尋的類別為$cat</div>";
+                                                    }
+                                                    else{
+                                                        echo "<div style='padding-top:20px; text-align: left;'>你搜尋的關鍵字是$searchtxt,類別為$cat</div>";
+                                                    }
                                                     //賣書輸出
                                                         if($data_nums==0){
                                                                 echo "<div class='section-title text-center' style='padding-top:20px'>
@@ -276,6 +291,9 @@ $link=mysqli_connect("localhost","root","12345678","user");
                                                     echo " 頁 <a href=?page=".$pages.">末頁</a><br /><br />";
                                                     ?>
                                                     </footer>
+                                                                </div>
+                                                        </div>
+                                                    </div>
                                             </div>
                                             </div>
                                 </div>

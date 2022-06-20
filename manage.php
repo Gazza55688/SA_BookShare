@@ -229,7 +229,7 @@ include "logincheck.php";
                                     }
                                 }
                                 
-                                $sqlt = "select b.book_name, u.user_name, u.user_t, b.buy_b, b.s_price, t.t_date, t.trade_id, b.book_id, t.t_status_1, u.user_id, b.buy_sit from trade as t, user as u, book as b where b.book_id = t.book_id and b.owner_id = '$record[0]' and  u.user_id = t.buy_id and t.t_status_1 != 4";
+                                $sqlt = "select b.book_name, u.user_name, u.user_t, b.buy_b, b.s_price, t.t_date, t.trade_id, b.book_id, t.t_status_1, u.user_id, b.buy_sit from trade as t, user as u, book as b where b.book_id = t.book_id and b.owner_id = '$record[0]' and  u.user_id = t.buy_id and t.t_status_1 != 4 and t.t_status_1 != 1";
                                 $result = mysqli_query($link, $sqlt);
                                 $record = mysqli_num_rows($result);
                                 $row = mysqli_num_rows($result);
@@ -263,6 +263,7 @@ include "logincheck.php";
                                 ?>
                                         <form action="dblink2.php" method="post">
                                 <?
+                                        $u_name = $row[1];
                                         if($row[3]=="b"){
                                             $row[3]="買";
                                             $row[4]="NT$$row[4]";
@@ -273,7 +274,7 @@ include "logincheck.php";
                                         }
                                         echo "<tr>
                                         <td>$row[0]</td>
-                                        <td>$row[1]</td>
+                                        <td><a href=user.php?uid=$row[9]>$u_name</a></td>
                                         <td>$row[2]</td>
                                         <td>$row[3]</td>
                                         <td>$row[4]</td>
@@ -314,9 +315,16 @@ include "logincheck.php";
                                         }
                                     }
                                     else{
-                                ?>
-                                            <td>已經賣出</td>
+                                        if($row[8]==2){
+                                ?>      
+                                            <td>賣出</td>
                                 <?
+                                        }
+                                        else{
+                                ?>
+                                            <td></td>
+                                <?
+                                        }
                                     }
                                 ?>
                                     </form>
