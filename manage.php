@@ -223,8 +223,8 @@ include "logincheck.php";
                                 $sqlj="select t.t_status_1, b.buy_sit, t.trade_id from trade as t, book as b where b.book_id = t.book_id and b.owner_id = '$record[0]'";
                                 $result_j = mysqli_query($link, $sqlj);
                                 while($row=mysqli_fetch_row($result_j)){
-                                    if($row[0]==3 && $row[1]==0){
-                                        $sqlc="update trade set t_status_1=4 where trade_id = $row[2]";
+                                    if($row[0]==3 and $row[1]==0){
+                                        $sqlc="update trade set t_status_1 = 4 where trade_id = $row[2]";
                                         mysqli_query($link, $sqlc);
                                     }
                                 }

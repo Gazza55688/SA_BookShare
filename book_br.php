@@ -191,15 +191,15 @@ $link=mysqli_connect("localhost","root","12345678","user");
                     </form>
                     <?
                         if(empty($searchtxt) and $cat=='請選擇類別(選填)' or $cat==""){
-	                       $sql1="select * from book where buy_b = 'b' order by book_id";
+	                       $sql1="select * from book where buy_b = 'b' and buy_sit != 1 order by book_id";
                            $sql2="select * from book where buy_b = 'br' order by book_id";
 		                }
                         elseif($cat=='請選擇類別(選填)'){
-                            $sql1="select * from book where buy_b = 'b' and book_name like '%$searchtxt%' order by book_id"; 
+                            $sql1="select * from book where buy_b = 'b' and book_name like '%$searchtxt%' and buy_sit != 1 order by book_id"; 
                             $sql2="select * from book where buy_b = 'br' and book_name like '%$searchtxt%' order by book_id";
                         }
                         elseif(empty($searchtxt)){
-                            $sql1="select * from book where buy_b = 'b' and book_cat = '$cat' order by book_id"; 
+                            $sql1="select * from book where buy_b = 'b' and book_cat = '$cat' and buy_sit != 1 order by book_id"; 
                             $sql2="select * from book where buy_b = 'br' and buy_sit != 1 and book_cat = '$cat' order by book_id";
                         }
                         else{

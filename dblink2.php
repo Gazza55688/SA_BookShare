@@ -79,17 +79,22 @@
         $site = $_POST["site"];
         $tid = $_POST["tid"];
         @$sqlb="insert into rate (user_id, trade_id, rate, rate_w) values ('$uid', '$tid','$score', '$text')";
-        echo $sqlb;
-        $sqlj="select buy_id from trade where trade_id = $tid";
+        $sqlj="select t.buy_id, b.buy_sit, b.buy_b from trade as t, book as b where t.trade_id = $tid and t.book_id = b.book_id";
         $result_j = mysqli_query($link, $sqlj);
         while($row=mysqli_fetch_row($result_j)){
             if($row[0]==$uid){
-                @$sqlc="update trade set t_status_2 = 3 where trade_id = $tid";
+                @$sqlc="update trade set t_status_2 = 4 where trade_id = $tid";
                 mysqli_query($link,$sqlc);
             }
             else{
-                @$sqlc="update trade set t_status_1 = 3 where trade_id = $tid";
-                mysqli_query($link,$sqlc);
+                if($row[1]==0 or ($row[2]=='b' and $row[1]==1)){
+                    @$sqlc="update trade set t_status_1 = 4 where trade_id = $tid";
+                    mysqli_query($link,$sqlc);
+                }
+                else{
+                    @$sqlc="update trade set t_status_1 = 3 where trade_id = $tid";
+                    mysqli_query($link,$sqlc);
+                }
             }
         }
         if(mysqli_query($link,$sqlb)){
